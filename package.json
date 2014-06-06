@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/reergymerej/slut-doc/issues"
   },
-  "homepage": "https://github.com/reergymerej/slut-doc"
+  "homepage": "https://github.com/reergymerej/slut-doc",
+  "devDependencies": {
+    "mocha": "~1.20.1",
+    "willy": "~0.2.4"
+  }
 }

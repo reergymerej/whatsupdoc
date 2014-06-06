@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var fs = require('fs');
+
+
+
+
+
+// ================================================
+// find all the files we'll be documenting
+/**
+* @param {String} path
+* @param {String} extension
+* @return {String[]}
+*/
+var getFiles = function (path, extension) {
+    var files = fs.readdirSync(path),
+        result = [];
+
+    var regex = /\.js$/i;
+
+    var i = 0,
+        max = files.length;
+
+    for (; i < max; i++) {
+        if (regex.test(files[i])) {
+            result.push(files[i]);
+        }
+    }
+
+    return result;
+};
+
+var path = process.cwd();
+var extension = 'js';
+var files = getFiles(path, extension);
+
+console.log('files', files);
