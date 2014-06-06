@@ -1,0 +1,37 @@
+{
+  "name": "willy",
+  "version": "0.2.4",
+  "description": "An assertion library that reads very naturally.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reergymerej/willy.git"
+  },
+  "keywords": [
+    "assertion library",
+    "assertion",
+    "assert",
+    "bdd",
+    "tdd",
+    "natural"
+  ],
+  "author": "Jeremy Greer <jeremy.greer.atl@gmail.com> (http://jeremygreer.herokuapp.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reergymerej/willy/issues"
+  },
+  "homepage": "https://github.com/reergymerej/willy",
+  "devDependencies": {
+    "mocha": "~1.19.0",
+    "q": "~1.0.1"
+  },
+  "dependencies": {
+    "q": "~1.0.1"
+  }
+}
