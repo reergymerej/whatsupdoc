@@ -1,0 +1,22 @@
+{
+  "name": "slut-doc",
+  "version": "0.0.0",
+  "description": "Simple Library Used To Document",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://reergymerej@github.com/reergymerej/slut-doc.git"
+  },
+  "author": "Jeremy Greer <jeremy.greer.atl@gmail.com> (http://jeremygreer.herokuapp.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reergymerej/slut-doc/issues"
+  },
+  "homepage": "https://github.com/reergymerej/slut-doc"
+}
