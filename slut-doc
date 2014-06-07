@@ -29,13 +29,13 @@ var getFiles = function (path, extension) {
 
     var files;
     var result = [];
-    var regex = new RegExp('\\.' + extension +
-        '$', 'i');
+    var regex;
     var i = 0;
     var max;
 
     path = path || process.cwd();
     extension = extension || 'js';
+    regex = new RegExp('\\.' + extension + '$', 'i');
     files = fs.readdirSync(path);
 
     for (max = files.length; i < max; i++) {
@@ -51,6 +51,21 @@ var getFiles = function (path, extension) {
     };
 };
 
+/**
+* @param {String} text
+* @param {RegExp} [pattern]
+* @return {}
+*/
+var findBlock = function (text, pattern) {
+    pattern = pattern || /\/\*{2,}.+\*\//g;
+
+    return pattern.test(text);
+};
+
 // ================================================
 
 exports.getFiles = getFiles;
+exports.findBlock = findBlock;
+
+// 
+var foo = '/**\\n\t* @param {Boolean} hey\\n\t*/';
