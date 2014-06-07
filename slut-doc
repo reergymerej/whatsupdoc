@@ -5,7 +5,10 @@
 var fs = require('fs');
 
 // ================================================
-// find all the files we'll be documenting
+
+var docBlockRegex = /\/\*{2,}(.|[\r\n])+?\*\//g;
+var docItemRegex = /\* @(param|return|private)(.|[\r\n])+?(?=\*( @|\/))/g;
+var blockDescRegex = /\/\*{2,}(.|[\r\n])+?(?=\* @)/g;
 
 /**
 * @param {String} [path = process.cwd()]
@@ -49,7 +52,7 @@ var getFiles = function (path, extension) {
 */
 var findBlocks = function (text, pattern) {
     var blocks = [];
-    pattern = pattern || /\/\*{2,}(.|[\r\n])+?\*\//g;
+    pattern = pattern || docBlockRegex;
 
     blocks = text.match(pattern);
 
@@ -62,8 +65,7 @@ var findBlocks = function (text, pattern) {
 * @return {String[]}
 */
 var findDocItems = function (text) {
-    var pattern = /\* @(param|return)(.|[\r\n])+?(?=\*( @|\/))/g,
-        items = text.match(pattern),
+    var items = text.match(docItemRegex),
         i = 0,
         max = items && items.length;
 
@@ -76,8 +78,24 @@ var findDocItems = function (text) {
     return items;
 };
 
+/**
+* @param {String} block
+* @return {String}
+*/
+var getBlockDescription = function (block) {
+    var desc = block.match(blockDescRegex);
+
+    // remove all the junk before and after the description
+    if (desc) {
+        desc = desc[0].replace(/\/\*{2,}(.|[\r\n])+?(?=[a-z])/gi, '').trim();
+    }
+
+    return desc || '';
+};
+
 // ================================================
 
 exports.getFiles = getFiles;
 exports.findBlocks = findBlocks;
 exports.findDocItems = findDocItems;
+exports.getBlockDescription = getBlockDescription;

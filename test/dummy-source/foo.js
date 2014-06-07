@@ -5,6 +5,7 @@
 * @param {AnotherType} [optionalValue]
 * @param {AnotherType} [optionalValWithDefault = 'blah']
 * @return {ReturnType}
+* @private
 */
 
     /**
@@ -18,3 +19,8 @@
     * @param {AnotherType} [optionalValWithDefault = 'blah']
     * @return {ReturnType}
     */
+
+                    /**
+                    * @param {Type} value no block description
+                    * @param {AnotherType} anotherValue but we have them
+                    */

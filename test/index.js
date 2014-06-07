@@ -60,10 +60,10 @@ describe('finding doc blocks', function () {
     });
 
     it('should be able to find blocks', function () {
-        will(f(text).length).be(2);
+        will(f(text).length).be(3);
     });
 
-    describe.only('finding doc items', function () {
+    describe('finding doc items', function () {
         var fdi = slutDoc.findDocItems,
             block = f(text)[0],
             items;
@@ -77,11 +77,20 @@ describe('finding doc blocks', function () {
         });
 
         it('should match each item', function () {
-            will(items.length).be(5);
+            will(items.length).be(6);
         });
 
         it('should clean up matches to all start with @', function () {
             will(items[0][0]).be('@');
+        });
+    });
+
+    describe('finding doc block description', function () {
+        var block = f(text)[0];
+
+        it('should return the description', function () {
+            will(slutDoc.getBlockDescription(block))
+                .be('This is a doc block description.');
         });
     });
 });
