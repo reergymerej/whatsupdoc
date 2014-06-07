@@ -4,18 +4,8 @@
 
 var fs = require('fs');
 
-
-
-
-
 // ================================================
 // find all the files we'll be documenting
-/**
-* @param {String} path
-* @param {String} extension
-* @return {String[]}
-*/
-
 
 /**
 * @param {String} [path = process.cwd()]
@@ -52,14 +42,25 @@ var getFiles = function (path, extension) {
 };
 
 /**
+* Find blocks of documentation (doc block).
 * @param {String} text
-* @param {RegExp} [pattern]
-* @return {}
+* @param {RegExp} [pattern = /\/\*{2,}.+\*\//g]
+* @return {String[]}
 */
 var findBlock = function (text, pattern) {
-    pattern = pattern || /\/\*{2,}.+\*\//g;
+    var blocks = [];
+    pattern = pattern || /\/\*{2,}(.|[\r\n])+?\*\//g;
 
-    return pattern.test(text);
+    blocks = text.match(pattern);
+
+    return blocks || [];
+};
+
+
+var findDocItems = function (text) {
+    var pattern = /\* @.+?(?=\* @)/g;
+
+    return text.match(pattern);
 };
 
 // ================================================
@@ -67,5 +68,3 @@ var findBlock = function (text, pattern) {
 exports.getFiles = getFiles;
 exports.findBlock = findBlock;
 
-// 
-var foo = '/**\\n\t* @param {Boolean} hey\\n\t*/';

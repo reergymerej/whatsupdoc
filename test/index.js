@@ -3,6 +3,7 @@
 /*global beforeEach */
 
 var path = require('path'),
+    fs = require('fs'),
     mocha = require('mocha'),
     willy = require('willy'),
     will = willy.will,
@@ -49,10 +50,24 @@ describe('finding files', function () {
     });
 });
 
-describe.only('finding doc blocks', function () {
-    var foo = 'blah blah blah \\n/**\\n\\t* @param {Boolean} hey\\n\\t*/\\nmore';
+describe('finding doc blocks', function () {
+    var f = slutDoc.findBlock,
+        foo = path.join(searchPath, 'foo.js'),
+        text = fs.readFileSync(foo, 'utf-8');
+
+    it('should return an Array', function () {
+        will(f(text)).beAn(Array);
+    });
 
     it('should be able to find blocks', function () {
-        will(slutDoc.findBlock(foo)).be(true);
+        will(f(text).length).be(2);
     });
+
+    // describe('finding doc items', function () {
+    //     var block = f(foo)[0];
+
+    //     it('is cool', function () {
+    //         console.log(block);
+    //     });
+    // });
 });
