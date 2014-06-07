@@ -13,13 +13,8 @@
     * spans multiple lines.
     *
     * @param {Type} value
-    *
     * @param {AnotherType} anotherValue
-    *
     * @param {AnotherType} [optionalValue]
-    *
     * @param {AnotherType} [optionalValWithDefault = 'blah']
-    *
     * @return {ReturnType}
-    *
     */

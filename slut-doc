@@ -47,7 +47,7 @@ var getFiles = function (path, extension) {
 * @param {RegExp} [pattern = /\/\*{2,}.+\*\//g]
 * @return {String[]}
 */
-var findBlock = function (text, pattern) {
+var findBlocks = function (text, pattern) {
     var blocks = [];
     pattern = pattern || /\/\*{2,}(.|[\r\n])+?\*\//g;
 
@@ -56,15 +56,28 @@ var findBlock = function (text, pattern) {
     return blocks || [];
 };
 
-
+/**
+* Find the items, except description.
+* @param {String} text
+* @return {String[]}
+*/
 var findDocItems = function (text) {
-    var pattern = /\* @.+?(?=\* @)/g;
+    var pattern = /\* @(param|return)(.|[\r\n])+?(?=\*( @|\/))/g,
+        items = text.match(pattern),
+        i = 0,
+        max = items && items.length;
 
-    return text.match(pattern);
+    // There's no negative lookbehind, so we have to clean
+    // up some crap.
+    for(; max && i < max; i++) {
+        items[i] = items[i].substr(1).trim();
+    }
+
+    return items;
 };
 
 // ================================================
 
 exports.getFiles = getFiles;
-exports.findBlock = findBlock;
-
+exports.findBlocks = findBlocks;
+exports.findDocItems = findDocItems;

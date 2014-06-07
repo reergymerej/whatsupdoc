@@ -51,7 +51,7 @@ describe('finding files', function () {
 });
 
 describe('finding doc blocks', function () {
-    var f = slutDoc.findBlock,
+    var f = slutDoc.findBlocks,
         foo = path.join(searchPath, 'foo.js'),
         text = fs.readFileSync(foo, 'utf-8');
 
@@ -63,11 +63,25 @@ describe('finding doc blocks', function () {
         will(f(text).length).be(2);
     });
 
-    // describe('finding doc items', function () {
-    //     var block = f(foo)[0];
+    describe.only('finding doc items', function () {
+        var fdi = slutDoc.findDocItems,
+            block = f(text)[0],
+            items;
 
-    //     it('is cool', function () {
-    //         console.log(block);
-    //     });
-    // });
+        beforeEach(function () {
+            items = fdi(block);
+        });
+
+        it('should return an Array', function () {
+            will(items).beAn(Array);
+        });
+
+        it('should match each item', function () {
+            will(items.length).be(5);
+        });
+
+        it('should clean up matches to all start with @', function () {
+            will(items[0][0]).be('@');
+        });
+    });
 });
