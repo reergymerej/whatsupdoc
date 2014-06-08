@@ -5,10 +5,28 @@
 var path = require('path'),
     mocha = require('mocha'),
     willy = require('willy'),
-    will = willy.will,
     fileHelper = require('../file-helper');
 
-var searchPath = path.join(__dirname, 'dummy-source');
+var searchPath = path.join(__dirname, 'dummy-source'),
+    will = willy.will;
+
+willy.addTest(function beGreaterThan(expectedValue) {
+    return this.if(
+
+        // a function passed the value being tested
+        function (actualValue) {
+
+            // return the result of your test
+            return actualValue > expectedValue;
+        },
+
+        // a string explaining what you were testing
+        'be greater than',
+
+        // the value tested (optional)
+        expectedValue
+    );
+});
 
 describe('finding files', function () {
     var g = fileHelper.getFiles;
@@ -28,5 +46,10 @@ describe('finding files', function () {
     it('should find only files with extension', function () {
         var result = g(searchPath);
         will(result.files.length).beGreaterThan(0);
+    });
+
+    it('should work recursively', function () {
+        var result = g(searchPath, 'js', true);
+        will(result.files.length).be(3);
     });
 });

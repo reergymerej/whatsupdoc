@@ -10,29 +10,15 @@ var path = require('path'),
     slutDoc = require('../slut-doc');
 
 var searchPath = path.join(__dirname, 'dummy-source');
+var testFile = path.join(searchPath, 'foo.js');
+var testFileText = fs.readFileSync(testFile, 'utf-8');
 
-willy.addTest(function beGreaterThan(expectedValue) {
-    return this.if(
 
-        // a function passed the value being tested
-        function (actualValue) {
 
-            // return the result of your test
-            return actualValue > expectedValue;
-        },
-
-        // a string explaining what you were testing
-        'be greater than',
-
-        // the value tested (optional)
-        expectedValue
-    );
-});
 
 describe('finding doc blocks', function () {
     var f = slutDoc.findBlocks,
-        foo = path.join(searchPath, 'foo.js'),
-        text = fs.readFileSync(foo, 'utf-8');
+        text = testFileText;
 
     it('should return an Array', function () {
         will(f(text)).beAn(Array);
@@ -72,4 +58,24 @@ describe('finding doc blocks', function () {
                 .be('This is a doc block description.');
         });
     });
+});
+
+describe.only('processing a directory', function () {
+    var main = slutDoc.main;
+
+    // it('should find all files', function () {
+    //     will(main(searchPath).length).be(3);
+    // });
+
+    it('should find all doc blocks in files', function () {
+        will(main(searchPath).length).be(6);
+    });
+
+    it('should identify descriptions');
+
+    it('should identify tags');
+
+    it('should create an Array of objects for each block');
+
+    it('should spit out some md');
 });

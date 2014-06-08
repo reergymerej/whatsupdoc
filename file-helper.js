@@ -2,40 +2,53 @@
 
 'use strict';
 
-var fs = require('fs');
+var fs = require('fs'),
+    path = require('path');
 
 /**
-* @param {String} [path = process.cwd()]
+* @param {String} [directory = process.cwd()]
 * @param {String} [extension = 'js']
+* @param {Boolean} [recursive]
 * @return {Object} return
 * @return {String} return.path
 * @return {String} return.extension
 * @return {String[]} return.files
 */
-var getFiles = function (path, extension) {
+var getFilesSync = function (directory, extension, recursive) {
 
     var files;
     var result = [];
     var regex;
     var i = 0;
     var max;
+    var filePath;
+    var stats;
 
-    path = path || process.cwd();
+    directory = directory || process.cwd();
     extension = extension || 'js';
     regex = new RegExp('\\.' + extension + '$', 'i');
-    files = fs.readdirSync(path);
+    files = fs.readdirSync(directory);
 
     for (max = files.length; i < max; i++) {
-        if (regex.test(files[i])) {
-            result.push(files[i]);
-        }
+
+        filePath = path.join(directory, files[i]);
+
+        stats = fs.statSync(filePath);
+        if (recursive && stats.isDirectory()) {
+            result = result.concat(
+                getFilesSync(filePath, extension, recursive).files);
+        } else {
+            if (regex.test(files[i])) {
+                result.push(filePath);
+            }
+        }        
     }
 
     return {
-        path: path,
+        path: directory,
         extension: extension,
         files: result
     };
 };
 
-exports.getFiles = getFiles;
+exports.getFiles = getFilesSync;

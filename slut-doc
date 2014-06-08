@@ -13,10 +13,104 @@ var blockDescRegex = /\/\*{2,}(.|[\r\n])+?(?=\* @)/g;
 
 
 /**
+* Iterate over an Array.
+* @param {Array} collection
+* @param {Function} fn - item, index
+* @private
+*/
+var each = function (collection, fn) {
+    var i, max;
+
+    if (collection && collection.length) {
+        for (i = 0, max = collection.length; i < max; i++) {
+            fn(collection[i]);
+        }
+    }
+};
+
+/**
+* @param {String} filePath
+* @return {String[]}
+* @private
+*/
+var getRawBlocksFromFile = function (filePath) {
+    var text = fs.readFileSync(filePath, 'utf-8');
+    return findBlocks(text);
+};
+
+/**
+* Return an object describing a docblock.  Properties
+* will contain the elements found in the block.
+* @param {String} rawBlock
+* @return {Object}
+*/
+var getDocItems = function (rawBlock) {
+    var rawItems = findDocItemStrings(rawBlock),
+        regex = /^@[a-z]+/i,
+        items = {},
+        key;
+
+    each(rawItems, function (item) {
+        key = item.match(regex);
+        key = key && key[0] && key[0].substr(1);
+        
+        if (!items.hasOwnProperty(key)) {
+            items[key] = [];
+        }
+        
+        items[key].push(item);
+    });
+
+    console.log(items);
+    return items;
+};
+
+/**
+* Convert a raw doc block into a standard object.
+* @param {String} rawBlock
+* @return {Object}
+* @private
+*/
+var getBlockObject = function (rawBlock) {
+    var obj = getDocItems(rawBlock);
+    obj.description = getBlockDescription(rawBlock);
+    return obj;
+};
+
+/**
+* @param {String[]} filePaths
+* @return {String[]} blocks
+* @private
+*/
+var getBlocksFromFiles = function (filePaths) {
+    var i, max, blocks = [];
+
+    var rawBlocks;
+
+    var getBlocks = function (rawBlocks) {
+        var blocks = [];
+
+        each(rawBlocks, function (block, i) {
+            blocks.push(getBlockObject(block));
+        });
+
+        return blocks;
+    };
+
+    for (i = 0, max = filePaths.length; i < max; i++) {
+        rawBlocks = getRawBlocksFromFile(filePaths[i]);
+        blocks = blocks.concat(getBlocks(rawBlocks));
+    }
+
+    return blocks;
+};
+
+/**
 * Find blocks of documentation (doc block).
 * @param {String} text
 * @param {RegExp} [pattern = /\/\*{2,}.+\*\//g]
 * @return {String[]}
+* @private
 */
 var findBlocks = function (text, pattern) {
     var blocks = [];
@@ -32,7 +126,7 @@ var findBlocks = function (text, pattern) {
 * @param {String} text
 * @return {String[]}
 */
-var findDocItems = function (text) {
+var findDocItemStrings = function (text) {
     var items = text.match(docItemRegex),
         i = 0,
         max = items && items.length;
@@ -61,9 +155,34 @@ var getBlockDescription = function (block) {
     return desc || '';
 };
 
+/**
+* @param {String} [directory = process.cwd()]
+*/
+var main = function (directory) {
+    
+    // find the files
+    var files = fileHelper.getFiles(directory, null, true).files;
+
+    // find the blocks in each
+    var blocks = getBlocksFromFiles(files);
+
+
+
+    return blocks;
+};
+
 // ================================================
+
+exports.main = main;
 
 // TODO: These should not be public.  This is only for testing.
 exports.findBlocks = findBlocks;
-exports.findDocItems = findDocItems;
+exports.findDocItemStrings = findDocItemStrings;
 exports.getBlockDescription = getBlockDescription;
+
+
+var path = require('path');
+var p = path.join(process.cwd(), 'test', 'dummy-source');
+
+var r = main(p);
+// console.log(r);
