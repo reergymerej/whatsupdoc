@@ -60,7 +60,7 @@ describe('finding doc blocks', function () {
     });
 });
 
-describe.only('processing a directory', function () {
+describe('processing a directory', function () {
     var main = slutDoc.main;
 
     // it('should find all files', function () {

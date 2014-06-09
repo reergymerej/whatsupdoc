@@ -43,6 +43,7 @@ var getRawBlocksFromFile = function (filePath) {
 * will contain the elements found in the block.
 * @param {String} rawBlock
 * @return {Object}
+* @private
 */
 var getDocItems = function (rawBlock) {
     var rawItems = findDocItemStrings(rawBlock),
@@ -57,11 +58,10 @@ var getDocItems = function (rawBlock) {
         if (!items.hasOwnProperty(key)) {
             items[key] = [];
         }
-        
+
         items[key].push(item);
     });
 
-    console.log(items);
     return items;
 };
 
@@ -185,4 +185,3 @@ var path = require('path');
 var p = path.join(process.cwd(), 'test', 'dummy-source');
 
 var r = main(p);
-// console.log(r);
