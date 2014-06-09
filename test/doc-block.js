@@ -12,10 +12,11 @@ var rawBlock =
     '/**\n' +
     '* @description This is a doc block description\n' +
     '* that spans multiple lines.\n' +
+    '* @method someCoolMethod\n' +
     '* @param {Type} value\n' +
     '* @param {AnotherType} anotherValue\n' +
     '* @param {AnotherType} [optionalValue]\n' +
-    '* @param {AnotherType} [optionalValWithDefault=\'blah\']\n' +
+    '* @param {AnotherType} [optionalValWithDefault=\'blah\'] This is a param description.\n' +
     '* @return {ReturnType}\n' +
     '* @private\n' +
     '*/';

@@ -1,0 +1,15 @@
+## %%METHOD_OR_CLASS_NAME%%
+
+%%METHOD_DESCRIPTION%%
+
+### Parameters
+    
+* %%PARAM_NAME%%: %%PARAM_TYPE%%
+
+%%PARAM_DESCRIPTION%%
+
+default value: %%PARAM_DEFAULT%%
+
+### Returns
+
+* %%RETURN_TYPE%%

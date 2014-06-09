@@ -1,5 +1,8 @@
 'use strict';
 
+var fs = require('fs'),
+    path = require('path');
+
 /**
 * Iterate over an Array.
 * @param {Array} collection
@@ -39,7 +42,29 @@ DocBlock.prototype.groupItems = function (items) {
 };
 
 DocBlock.prototype.stringify = function () {
-    return JSON.stringify(this);
+    var filePath = path.join(__dirname, 'template.txt');
+    var template = fs.readFileSync(filePath, 'utf-8');
+    var output = template;
+
+    var i;
+
+
+    var methodOrClass = (this.method || this.class)[0];
+
+    output = output.replace('%%METHOD_OR_CLASS_NAME%%', methodOrClass.name);
+    
+    var description = this.description && this.description[0].description;
+
+    output = output.replace('%%METHOD_DESCRIPTION%%', description);
+
+
+    for (i in this) {
+        if (this.hasOwnProperty(i)) {
+            console.log(i);
+        }
+    }
+
+    return output;
 };
 
 /**
