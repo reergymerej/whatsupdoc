@@ -133,9 +133,15 @@ var main = function (directory) {
     var blocks = getBlocksFromFiles(files);
 
     var result = stringify(blocks);
+
+    // console.log(result);
+
+    fs.writeFileSync('api.md', result);
 };
 
 // ================================================
+
+main();
 
 exports.main = main;
 

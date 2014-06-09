@@ -48,21 +48,53 @@ DocBlock.prototype.stringify = function () {
 
     var i;
 
+    // method 
+    var methodOrClass = this.method || this.class;
+    var methodOutput = '';
 
-    var methodOrClass = (this.method || this.class)[0];
+    if (methodOrClass) {
+        methodOrClass = methodOrClass[0];
+        methodOutput = output.replace('%%METHOD_OR_CLASS_NAME%%', methodOrClass.name);
+    }
 
-    output = output.replace('%%METHOD_OR_CLASS_NAME%%', methodOrClass.name);
+    output = output.replace('%%METHOD_OR_CLASS_NAME%%', methodOutput);
+
     
     var description = this.description && this.description[0].description;
 
     output = output.replace('%%METHOD_DESCRIPTION%%', description);
 
 
-    for (i in this) {
-        if (this.hasOwnProperty(i)) {
-            console.log(i);
-        }
+    // params
+    var PARAM_TEMPLATE = '* %%PARAM_NAME%%: %%PARAM_TYPE%%\n\n' +
+        '%%PARAM_DESCRIPTION%%\n\n' +
+        'default value: %%PARAM_DEFAULT%%\n\n';
+
+    var paramsOutput = '';
+
+    each(this.param, function (param) {
+        var output = PARAM_TEMPLATE;
+
+        output = output.replace('%%PARAM_NAME%%', param.name);
+        output = output.replace('%%PARAM_TYPE%%', param.type);
+        output = output.replace('%%PARAM_DESCRIPTION%%', param.description);
+        output = output.replace('%%PARAM_DEFAULT%%', param.default);
+
+        paramsOutput += output;
+    });
+
+    output = output.replace(PARAM_TEMPLATE, paramsOutput);
+
+    // returns
+
+    var returns = this.return && this.return[0];
+    var returnsOutput = '';
+
+    if (returns) {
+        returnsOutput = output.replace('%%RETURN_TYPE%%', returns.type);
     }
+
+    output = output.replace('%%RETURN_TYPE%%', returnsOutput);
 
     return output;
 };
