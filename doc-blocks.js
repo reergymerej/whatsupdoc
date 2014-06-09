@@ -22,7 +22,24 @@ var each = function (collection, fn) {
 */
 var DocBlock = function (raw) {
     var rawItems = getRawItems(raw);
-    this.items = getItems(rawItems);
+    var items = getItems(rawItems);
+    this.groupItems(items);
+};
+
+/**
+* @param {Object} items
+*/
+DocBlock.prototype.groupItems = function (items) {
+    var me = this;
+    
+    each(items, function (item) {
+        me[item.key] = me[item.key] || [];
+        me[item.key].push(item);
+    });
+};
+
+DocBlock.prototype.stringify = function () {
+    return JSON.stringify(this);
 };
 
 /**
@@ -59,7 +76,7 @@ var getItems = function (rawItems) {
 var parseItem = function (item) {
     var s = item;
 
-    var keyRegex = /^.+?(?= )/g;
+    var keyRegex = /^.+?(?=\s)/g;
     var typeRegex = /\{.+\}/g;
     var nameRegex = / +\[?[a-z0-9]+/gi;
     var defaultRegex = /= ?.+?(?=( |\]))/gi;
@@ -80,14 +97,14 @@ var parseItem = function (item) {
     var obj = {};
 
     obj.key = (function () {
-            var key = pluck(s, keyRegex);
-            return key || s;
-        }());
+        var key = pluck(s, keyRegex);
+        return key || s;
+    }());
 
     // Flag is an internal indicator that means
     // this doc item only had a key, nothing else:
     // "* @private" or something like that.
-    obj.flag = obj.key === s;
+    obj.flag = obj.key === s.trim();
 
     if (!obj.flag) {
 
@@ -152,24 +169,8 @@ var parseItem = function (item) {
         }
     }
 
-    console.log(obj);
+    return obj;
 };
 
 // ================================================
 exports.DocBlock = DocBlock;
-
-
-var rawBlock =
-    '/**\n' +
-    '* @description This is a doc block description\n' +
-    '* that spans multiple lines.\n' +
-    '* @param {Type} value\n' +
-    '* @param {AnotherType} anotherValue\n' +
-    '* @param {AnotherType} [optionalValue]\n' +
-    '* @param {AnotherType} [optionalValWithDefault=\'blah\']\n' +
-    '* @return {ReturnType}\n' +
-    '* @private\n' +
-    '*/';
-var b = new DocBlock(rawBlock);
-console.log(b);
-

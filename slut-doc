@@ -4,11 +4,11 @@
 
 var fs = require('fs');
 var fileHelper = require('./file-helper');
+var docBlocks = require('./doc-blocks');
 
 // ================================================
 
 var docBlockRegex = /\/\*{2,}(.|[\r\n])+?\*\//g;
-var docItemRegex = /\* @(param|return|private)(.|[\r\n])+?(?=\*( @|\/))/g;
 var blockDescRegex = /\/\*{2,}(.|[\r\n])+?(?=\* @)/g;
 
 
@@ -39,42 +39,13 @@ var getRawBlocksFromFile = function (filePath) {
 };
 
 /**
-* Return an object describing a docblock.  Properties
-* will contain the elements found in the block.
-* @param {String} rawBlock
-* @return {Object}
-* @private
-*/
-var getDocItems = function (rawBlock) {
-    var rawItems = findDocItemStrings(rawBlock),
-        regex = /^@[a-z]+/i,
-        items = {},
-        key;
-
-    each(rawItems, function (item) {
-        key = item.match(regex);
-        key = key && key[0] && key[0].substr(1);
-        
-        if (!items.hasOwnProperty(key)) {
-            items[key] = [];
-        }
-
-        items[key].push(item);
-    });
-
-    return items;
-};
-
-/**
 * Convert a raw doc block into a standard object.
 * @param {String} rawBlock
-* @return {Object}
+* @return {DocBlock}
 * @private
 */
 var getBlockObject = function (rawBlock) {
-    var obj = getDocItems(rawBlock);
-    obj.description = getBlockDescription(rawBlock);
-    return obj;
+    return new docBlocks.DocBlock(rawBlock);
 };
 
 /**
@@ -122,25 +93,6 @@ var findBlocks = function (text, pattern) {
 };
 
 /**
-* Find the items, except description.
-* @param {String} text
-* @return {String[]}
-*/
-var findDocItemStrings = function (text) {
-    var items = text.match(docItemRegex),
-        i = 0,
-        max = items && items.length;
-
-    // There's no negative lookbehind, so we have to clean
-    // up some crap.
-    for(; max && i < max; i++) {
-        items[i] = items[i].substr(1).trim();
-    }
-
-    return items;
-};
-
-/**
 * @param {String} block
 * @return {String}
 */
@@ -156,6 +108,20 @@ var getBlockDescription = function (block) {
 };
 
 /**
+* @param {DocBlock[]} blocks
+* @return {String}
+*/
+var stringify = function (blocks) {
+    var str = '';
+
+    each(blocks, function (block) {
+        str += block.stringify();
+    });  
+
+    return str;
+};
+
+/**
 * @param {String} [directory = process.cwd()]
 */
 var main = function (directory) {
@@ -166,9 +132,7 @@ var main = function (directory) {
     // find the blocks in each
     var blocks = getBlocksFromFiles(files);
 
-
-
-    return blocks;
+    var result = stringify(blocks);
 };
 
 // ================================================
@@ -177,11 +141,4 @@ exports.main = main;
 
 // TODO: These should not be public.  This is only for testing.
 exports.findBlocks = findBlocks;
-exports.findDocItemStrings = findDocItemStrings;
 exports.getBlockDescription = getBlockDescription;
-
-
-var path = require('path');
-var p = path.join(process.cwd(), 'test', 'dummy-source');
-
-var r = main(p);

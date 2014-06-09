@@ -6,7 +6,7 @@ var mocha = require('mocha'),
     willy = require('willy'),
     will = willy.will,
     docBlocks = require('../doc-blocks'),
-    DocBlock = docBlocks.DockBlock;
+    DocBlock = docBlocks.DocBlock;
 
 var rawBlock =
     '/**\n' +
@@ -20,11 +20,36 @@ var rawBlock =
     '* @private\n' +
     '*/';
 
-describe('getting a DockBlock from raw string', function () {
+describe('getting a DocBlock from raw string', function () {
+    var block;
 
-    it('should identify the description', function () {
-        var block = new DocBlock(rawBlock);
-        will(block.description).be();
+    beforeEach(function () {
+        block = new DocBlock(rawBlock);
+    });
 
+    it('should identify each of the elements', function () {
+        will(block).have([
+            'description',
+            'param',
+            'return',
+            'private'
+        ]);
+    });
+
+    it.only('should be able to stringify itself', function () {
+        var str = block.stringify();
+        // var expected =
+        //     '* This is a doc block description that spans multiple lines.\n' +
+        //     '**Parameters**\n' +
+        //     '* anotherValue *AnotherType*\n' +
+        //     '* optionalValue *AnotherType* (optional)\n' +
+        //     '* optionalValWithDefault=]AnotherType (optional)\n' +
+        //     '** defaults: \'blah\'\n' +
+        //     '* @return {ReturnType}\n' +
+        //     '* @private\n';
+
+        console.log(str);   
+
+        will(str).exist();
     });
 });
