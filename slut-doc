@@ -5,28 +5,12 @@
 var fs = require('fs');
 var fileHelper = require('./file-helper');
 var docBlocks = require('./doc-blocks');
+var util = require('./util');
 
 // ================================================
 
 var docBlockRegex = /\/\*{2,}(.|[\r\n])+?\*\//g;
 var blockDescRegex = /\/\*{2,}(.|[\r\n])+?(?=\* @)/g;
-
-
-/**
-* Iterate over an Array.
-* @param {Array} collection
-* @param {Function} fn - item, index
-* @private
-*/
-var each = function (collection, fn) {
-    var i, max;
-
-    if (collection && collection.length) {
-        for (i = 0, max = collection.length; i < max; i++) {
-            fn(collection[i]);
-        }
-    }
-};
 
 /**
 * @param {String} filePath
@@ -61,7 +45,7 @@ var getBlocksFromFiles = function (filePaths) {
     var getBlocks = function (rawBlocks) {
         var blocks = [];
 
-        each(rawBlocks, function (block, i) {
+        util.each(rawBlocks, function (block, i) {
             blocks.push(getBlockObject(block));
         });
 
@@ -114,7 +98,7 @@ var getBlockDescription = function (block) {
 var stringify = function (blocks) {
     var str = '';
 
-    each(blocks, function (block) {
+    util.each(blocks, function (block) {
         str += block.stringify();
     });  
 
@@ -141,7 +125,7 @@ var main = function (directory) {
 
 // ================================================
 
-main();
+// main();
 
 exports.main = main;
 

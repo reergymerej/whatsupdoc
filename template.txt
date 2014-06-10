@@ -1,15 +1,18 @@
-## %%METHOD_OR_CLASS_NAME%%
+## {{ method }}
 
-%%METHOD_DESCRIPTION%%
+{{ description }}
 
 ### Parameters
-    
-* %%PARAM_NAME%%: %%PARAM_TYPE%%
 
-%%PARAM_DESCRIPTION%%
+{% for param in params %}
+* {{ param.name }}: {{ param.type }}    
 
-default value: %%PARAM_DEFAULT%%
+{{ param.description }}
+
+default value: {{ param.default }}
+
+{% endfor %}
 
 ### Returns
 
-* %%RETURN_TYPE%%
+* {{ returns.type }} {{ returns.description }}
