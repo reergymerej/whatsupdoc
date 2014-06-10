@@ -33,14 +33,13 @@ var getBlockObject = function (rawBlock) {
 };
 
 /**
+* @function getBlocksFromFiles
 * @param {String[]} filePaths
-* @return {String[]} blocks
+* @return {Object[]} blocks - file, blocks
 * @private
 */
 var getBlocksFromFiles = function (filePaths) {
-    var i, max, blocks = [];
-
-    var rawBlocks;
+    var i, max, result = [];
 
     var getBlocks = function (rawBlocks) {
         var blocks = [];
@@ -52,12 +51,16 @@ var getBlocksFromFiles = function (filePaths) {
         return blocks;
     };
 
-    for (i = 0, max = filePaths.length; i < max; i++) {
-        rawBlocks = getRawBlocksFromFile(filePaths[i]);
-        blocks = blocks.concat(getBlocks(rawBlocks));
-    }
+    util.each(filePaths, function (filePath) {
+        var rawBlocks = getRawBlocksFromFile(filePath);
+        
+        result = result.concat({
+            file: filePath,
+            blocks: getBlocks(rawBlocks)
+        });
+    });
 
-    return blocks;
+    return result;
 };
 
 /**
@@ -92,15 +95,25 @@ var getBlockDescription = function (block) {
 };
 
 /**
-* @param {DocBlock[]} blocks
+* @param {Object[]} - file, blocks
 * @return {String}
 */
 var stringify = function (blocks) {
     var str = '';
 
     util.each(blocks, function (block) {
-        str += block.stringify();
-    });  
+        console.log(block.stringify);
+    });
+    // console.log(blocks);
+
+    // var i;
+    // for (i in blocks) {
+    //     if(blocks.hasOwnProperty(i)) {}
+    // }
+
+    // util.each(blocks, function (block) {
+    //     str += block.stringify();
+    // });  
 
     return str;
 };

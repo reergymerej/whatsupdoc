@@ -30,21 +30,39 @@ DocBlock.prototype.groupItems = function (items) {
 
 DocBlock.prototype.stringify = function () {
     var templateFilePath = path.join(__dirname, 'template.txt');
-    
-    var tpl = swig.compileFile(templateFilePath);
-    // var output = tpl({ block: this });
-    console.log(this);
+    var template = swig.compileFile(templateFilePath);
+    var that = this;
 
     var obj = {
-        method: this.method[0].name,
-        description: this.description[0].description,
+        name: this.getName(),
+        
+        description: this.description &&
+            this.description[0].description,
+
         params: this.param,
-        returns: this.return[0]
+        returns: this.return && this.return[0]
     };
 
-    var output = tpl(obj);
+    return template(obj);
+};
 
-    return output;
+DocBlock.prototype.getName = function () {
+    var result = '*unnamed*';
+    var possible = ['method', 'class', 'fuction'];
+    var that = this;
+    var which;
+    
+    util.each(possible, function (possibility) {
+        if (that.hasOwnProperty(possibility)) {
+            which = possibility;
+        }
+    });
+
+    if (which) {
+        result = that[which][0].name;
+    }
+
+    return result;
 };
 
 /**

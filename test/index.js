@@ -15,14 +15,8 @@ var testFile = path.join(searchPath, 'foo.js');
 var testFileText = fs.readFileSync(testFile, 'utf-8');
 
 
-describe('finding doc blocks', function () {
-    var blocks = slutDoc.findBlocks(testFileText),
-        block = blocks[0],
-        docBlock = new docBlocks.DocBlock(block);
-
-    // console.log(testFileText);
-    console.log(docBlock);
-
-    console.log(docBlock.stringify());
+describe.only('everything', function () {
+    var resutl = slutDoc.main(searchPath);
     
+    it('should make md');
 });
