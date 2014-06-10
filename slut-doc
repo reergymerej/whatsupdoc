@@ -26,7 +26,7 @@ var getRawBlocksFromFile = function (filePath) {
 /**
 * @function getBlocksFromFiles
 * @param {String[]} filePaths
-* @return {Object[]} blocks - file, blocks
+* @return {DocBlock[]}
 * @private
 */
 var getBlocksFromFiles = function (filePaths) {
@@ -84,7 +84,7 @@ var getBlockDescription = function (block) {
 };
 
 /**
-* @param {Object[]} - file, blocks
+* @param {DocBlock[]} blocks
 * @return {String}
 */
 var stringify = function (blocks) {
