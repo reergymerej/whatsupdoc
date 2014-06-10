@@ -22,15 +22,6 @@ var getRawBlocksFromFile = function (filePath) {
     return findBlocks(text);
 };
 
-/**
-* Convert a raw doc block into a standard object.
-* @param {String} rawBlock
-* @return {DocBlock}
-* @private
-*/
-var getBlockObject = function (rawBlock) {
-    return new docBlocks.DocBlock(rawBlock);
-};
 
 /**
 * @function getBlocksFromFiles
@@ -41,11 +32,13 @@ var getBlockObject = function (rawBlock) {
 var getBlocksFromFiles = function (filePaths) {
     var i, max, result = [];
 
-    var getBlocks = function (rawBlocks) {
+    var getBlocks = function (rawBlocks, filePath) {
         var blocks = [];
 
         util.each(rawBlocks, function (block, i) {
-            blocks.push(getBlockObject(block));
+            blocks.push(
+                new docBlocks.DocBlock(block, filePath)
+            );
         });
 
         return blocks;
@@ -53,11 +46,7 @@ var getBlocksFromFiles = function (filePaths) {
 
     util.each(filePaths, function (filePath) {
         var rawBlocks = getRawBlocksFromFile(filePath);
-        
-        result = result.concat({
-            file: filePath,
-            blocks: getBlocks(rawBlocks)
-        });
+        result = result.concat(getBlocks(rawBlocks, filePath));
     });
 
     return result;
@@ -102,18 +91,8 @@ var stringify = function (blocks) {
     var str = '';
 
     util.each(blocks, function (block) {
-        console.log(block.stringify);
-    });
-    // console.log(blocks);
-
-    // var i;
-    // for (i in blocks) {
-    //     if(blocks.hasOwnProperty(i)) {}
-    // }
-
-    // util.each(blocks, function (block) {
-    //     str += block.stringify();
-    // });  
+        str += block.stringify();
+    });  
 
     return str;
 };

@@ -10,9 +10,11 @@ var fs = require('fs'),
 /**
 * @class DocBlock
 * @param {String} raw
+* @param {String} filePath
 */
-var DocBlock = function (raw) {
+var DocBlock = function (raw, filePath) {
     var items = getItems(raw);
+    this.filePath = filePath;
     this.groupItems(items);
 };
 
@@ -34,6 +36,7 @@ DocBlock.prototype.stringify = function () {
     var that = this;
 
     var obj = {
+        file: this.filePath,
         name: this.getName(),
         
         description: this.description &&
