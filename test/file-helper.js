@@ -53,3 +53,21 @@ describe('finding files', function () {
         will(result.files.length).be(3);
     });
 });
+
+describe('finding pattern in files', function () {
+    var file = path.join(__dirname, 'dummy-source/foo.txt');
+
+    it('should return matches in a file', function () {
+        var regex = /foo bar.*/g;
+        var matches = fileHelper.getMatches(file, regex);
+
+        will(matches.length).be(2);
+    });
+
+    it('should return an empty Array if none are found', function () {
+        var regex = /asdf/;
+        var matches = fileHelper.getMatches(file, regex);
+
+        will(matches).beAn(Array);
+    });
+});

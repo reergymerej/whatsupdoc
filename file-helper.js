@@ -51,4 +51,24 @@ var getFilesSync = function (directory, extension, recursive) {
     };
 };
 
+/**
+* @function getMatches
+* @description Get matches for regex found in a file.
+* @param {String} filePath
+* @param {RegExp} regex
+* @return {String[]}
+*/
+var getMatches = function (filePath, regex) {
+    var matches = [];
+
+    var file = fs.readFileSync(filePath, 'utf-8');
+
+    if (file) {
+        matches = file.match(regex) || [];
+    }
+
+    return matches;
+};
+
 exports.getFiles = getFilesSync;
+exports.getMatches = getMatches;

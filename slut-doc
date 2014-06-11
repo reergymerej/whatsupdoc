@@ -22,15 +22,6 @@ var getRawBlocksFromFile = function (filePath) {
     return findBlocks(text);
 };
 
-/**
-* Convert a raw doc block into a standard object.
-* @param {String} rawBlock
-* @return {DocBlock}
-* @private
-*/
-var getBlockObject = function (rawBlock) {
-    return new docBlocks.DocBlock(rawBlock);
-};
 
 /**
 * @function getBlocksFromFiles
@@ -53,11 +44,8 @@ var getBlocksFromFiles = function (filePaths) {
 
     util.each(filePaths, function (filePath) {
         var rawBlocks = getRawBlocksFromFile(filePath);
-        
-        result = result.concat({
-            file: filePath,
-            blocks: getBlocks(rawBlocks)
-        });
+
+        result = result.concat(new docBlocks.DocBlock(rawBlocks, filePath));
     });
 
     return result;
