@@ -1,19 +1,25 @@
 
-## {{ name }}
+### {{ name }}
 
 {{ description }}
 
-### Parameters
+privacy: {{ privacy }}
+
+{{ file }}
+
+
+{% if params %}
+**Parameters**
 
 {% for param in params %}
-* {{ param.name }}: {{ param.type }}    
+*  **{{ param.name }}** *{{ param.type }}* {{ param.description }} 
 
-{{ param.description }}
-
-default value: {{ param.default }}
-
+	{% if param.optional %}
+	*optional* - default value: {{ param.default }}
+    {% endif %}
 {% endfor %}
+{% endif %}
 
-### Returns
-
-* {{ returns.type }} {{ returns.description }}
+{% if returns %}
+**Returns**: *{{ returns.type }}* {{ returns.name }} {{ returns.description }}
+{% endif %}

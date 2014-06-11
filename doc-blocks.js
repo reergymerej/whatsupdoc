@@ -10,9 +10,11 @@ var fs = require('fs'),
 /**
 * @class DocBlock
 * @param {String} raw
+* @param {String} filePath
 */
-var DocBlock = function (raw) {
+var DocBlock = function (raw, filePath) {
     var items = getItems(raw);
+    this.filePath = filePath;
     this.groupItems(items);
 };
 
@@ -34,8 +36,9 @@ DocBlock.prototype.stringify = function () {
     var that = this;
 
     var obj = {
+        file: this.filePath,
         name: this.getName(),
-        
+        privacy: this.getPrivacy(),
         description: this.description &&
             this.description[0].description,
 
@@ -60,6 +63,25 @@ DocBlock.prototype.getName = function () {
 
     if (which) {
         result = that[which][0].name;
+    }
+
+    return result;
+};
+
+DocBlock.prototype.getPrivacy = function () {
+    var result = 'not specified';
+    var possible = ['public', 'protected', 'private'];
+    var that = this;
+    var which;
+    
+    util.each(possible, function (possibility) {
+        if (that.hasOwnProperty(possibility)) {
+            which = possibility;
+        }
+    });
+
+    if (which) {
+        result = that[which][0].key;
     }
 
     return result;

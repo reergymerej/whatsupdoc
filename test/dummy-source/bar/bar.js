@@ -1,4 +1,14 @@
 /**
+* @method eatAChicken
+* @description Make this widget eat a chicken and
+* report back how long it took.
+* @protected
+* @param {String[]} spices what spices should be added to the chicken
+* @param {Boolean} [fried=true] if not fried, it will be raw
+* @return {Number} minutes required to eat chicken
+*/
+
+/**
 * I am a private doc block.
 * @private
 */

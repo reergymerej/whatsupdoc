@@ -16,7 +16,7 @@ var testFileText = fs.readFileSync(testFile, 'utf-8');
 
 
 describe.only('everything', function () {
-    var resutl = slutDoc.main(searchPath);
+    var result = slutDoc.main(searchPath);
     
     it('should make md');
 });
