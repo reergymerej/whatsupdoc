@@ -5,12 +5,11 @@ var fs = require('fs'),
     path = require('path'),
     util = require('./util');
 
-
-
 /**
+* @description an object used to represent a block of documentation
 * @class DocBlock
-* @param {String} raw
-* @param {String} filePath
+* @param {String} raw the text found that will be converted into a DocBlock
+* @param {String} filePath the file the block was found in
 */
 var DocBlock = function (raw, filePath) {
     var items = getItems(raw);
@@ -88,15 +87,18 @@ DocBlock.prototype.getPrivacy = function () {
 };
 
 /**
+* @function getItems
 * @param {String}
 * @return {Object[]}
 */
 var getItems = function (raw) {
 
     /**
-    * Identify each item in the doc block.
+    * @function getRawItems
+    * @description Identify each item in the doc block.
     * @param {String}
     * @return {String[]}
+    * @private
     */
     var getRawItems = function (raw) {
 
@@ -123,6 +125,10 @@ var getItems = function (raw) {
     return items;
 };
 
+/**
+* @function parseItem
+* @private
+*/
 var parseItem = function (item) {
     var s = item;
 
