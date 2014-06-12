@@ -1,7 +1,5 @@
 'use strict';
 
-/*global beforeEach */
-
 var path = require('path'),
     fs = require('fs'),
     mocha = require('mocha'),
@@ -15,8 +13,8 @@ var testFile = path.join(searchPath, 'foo.js');
 var testFileText = fs.readFileSync(testFile, 'utf-8');
 
 
-describe.only('everything', function () {
-    var result = slutDoc.main(searchPath);
+describe('everything', function () {
+    var result = slutDoc.go(searchPath);
     
     it('should make md');
 });

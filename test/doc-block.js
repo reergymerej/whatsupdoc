@@ -10,7 +10,7 @@ var mocha = require('mocha'),
 
 var rawBlock =
     '/**\n' +
-    '* @description IS THIS REAL? This is a doc block description\n' +
+    '* @description This is a doc block description\n' +
     '* that spans multiple lines.\n' +
     '* @method someCoolMethod\n' +
     '* @param {Type} value\n' +
@@ -28,20 +28,8 @@ describe('getting a DocBlock from raw string', function () {
         block = new DocBlock(rawBlock);
     });
 
-    it.only('should be able to stringify itself', function () {
+    it('should be able to stringify itself', function () {
         var str = block.stringify();
-        // var expected =
-        //     '* This is a doc block description that spans multiple lines.\n' +
-        //     '**Parameters**\n' +
-        //     '* anotherValue *AnotherType*\n' +
-        //     '* optionalValue *AnotherType* (optional)\n' +
-        //     '* optionalValWithDefault=]AnotherType (optional)\n' +
-        //     '** defaults: \'blah\'\n' +
-        //     '* @return {ReturnType}\n' +
-        //     '* @private\n';
-
-        console.log(str);
-
         will(str).exist();
     });
 });

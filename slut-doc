@@ -10,18 +10,6 @@ var util = require('./util');
 // ================================================
 
 var docBlockRegex = /\/\*{2,}(.|[\r\n])+?\*\//g;
-var blockDescRegex = /\/\*{2,}(.|[\r\n])+?(?=\* @)/g;
-
-/**
-* @param {String} filePath
-* @return {String[]}
-* @private
-*/
-var getRawBlocksFromFile = function (filePath) {
-    var text = fs.readFileSync(filePath, 'utf-8');
-    return findBlocks(text);
-};
-
 
 /**
 * @function getBlocksFromFiles
@@ -45,42 +33,12 @@ var getBlocksFromFiles = function (filePaths) {
     };
 
     util.each(filePaths, function (filePath) {
-        var rawBlocks = getRawBlocksFromFile(filePath);
+        var rawBlocks = fileHelper.getMatches(filePath, docBlockRegex);
+
         result = result.concat(getBlocks(rawBlocks, filePath));
     });
 
     return result;
-};
-
-/**
-* Find blocks of documentation (doc block).
-* @param {String} text
-* @param {RegExp} [pattern = /\/\*{2,}.+\*\//g]
-* @return {String[]}
-* @private
-*/
-var findBlocks = function (text, pattern) {
-    var blocks = [];
-    pattern = pattern || docBlockRegex;
-
-    blocks = text.match(pattern);
-
-    return blocks || [];
-};
-
-/**
-* @param {String} block
-* @return {String}
-*/
-var getBlockDescription = function (block) {
-    var desc = block.match(blockDescRegex);
-
-    // remove all the junk before and after the description
-    if (desc) {
-        desc = desc[0].replace(/\/\*{2,}(.|[\r\n])+?(?=[a-z])/gi, '').trim();
-    }
-
-    return desc || '';
 };
 
 /**
@@ -98,9 +56,11 @@ var stringify = function (blocks) {
 };
 
 /**
+* @description generate the API docs
+* @method go
 * @param {String} [directory = process.cwd()]
 */
-var main = function (directory) {
+var go = function (directory) {
     
     // find the files
     var files = fileHelper.getFiles(directory, null, true).files;
@@ -110,17 +70,15 @@ var main = function (directory) {
 
     var result = stringify(blocks);
 
-    // console.log(result);
-
     fs.writeFileSync('api.md', result);
 };
 
 // ================================================
 
-// main();
+var dir = process.argv[2];
 
-exports.main = main;
-
-// TODO: These should not be public.  This is only for testing.
-exports.findBlocks = findBlocks;
-exports.getBlockDescription = getBlockDescription;
+if (dir && dir !== '--reporter') {
+    go(dir);
+} else {
+    exports.go = go;
+}
