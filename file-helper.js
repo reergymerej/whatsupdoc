@@ -34,9 +34,10 @@ var getFilesSync = function (directory, extension, recursive) {
         filePath = path.join(directory, files[i]);
 
         stats = fs.statSync(filePath);
-        if (recursive && stats.isDirectory()) {
-            result = result.concat(
-                getFilesSync(filePath, extension, recursive).files);
+        if (recursive && files[i].indexOf('node_modules') === -1 &&
+            stats.isDirectory()) {
+                result = result.concat(
+                    getFilesSync(filePath, extension, recursive).files);
         } else {
             if (regex.test(files[i])) {
                 result.push(filePath);

@@ -12,6 +12,26 @@ var util = require('./util');
 var docBlockRegex = /\/\*{2,}(.|[\r\n])+?\*\//g;
 
 /**
+* @description generate the API docs
+* @method go
+* @param {String} [directory = process.cwd()]
+* @public
+*/
+var go = function (directory) {
+    
+    // find the files
+    var files = fileHelper.getFiles(directory, null, true).files;
+
+    // find the blocks in each
+    var blocks = getBlocksFromFiles(files);
+
+    var result = stringify(blocks);
+
+    fs.writeFileSync('api.md', result);
+};
+
+/**
+* @description get the DocBlocks from an Array of files
 * @function getBlocksFromFiles
 * @param {String[]} filePaths
 * @return {DocBlock[]}
@@ -42,8 +62,12 @@ var getBlocksFromFiles = function (filePaths) {
 };
 
 /**
+* @description get the result of bunch of
+* stringified DocBlocks
+* @function stringify
 * @param {DocBlock[]} blocks
 * @return {String}
+* @private
 */
 var stringify = function (blocks) {
     var str = '';
@@ -53,24 +77,6 @@ var stringify = function (blocks) {
     });  
 
     return str;
-};
-
-/**
-* @description generate the API docs
-* @method go
-* @param {String} [directory = process.cwd()]
-*/
-var go = function (directory) {
-    
-    // find the files
-    var files = fileHelper.getFiles(directory, null, true).files;
-
-    // find the blocks in each
-    var blocks = getBlocksFromFiles(files);
-
-    var result = stringify(blocks);
-
-    fs.writeFileSync('api.md', result);
 };
 
 // ================================================

@@ -28,6 +28,26 @@ willy.addTest(function beGreaterThan(expectedValue) {
     );
 });
 
+willy.addTest(function haveAnItemLike(expectedValue) {
+    return this.if(
+
+        function (actualValue) {
+            var foundMatch = false;
+            actualValue.forEach(function (item) {
+                if (!foundMatch) {
+                    foundMatch = item.indexOf(expectedValue) > -1;
+                }
+            });
+
+            return foundMatch;
+        },
+
+        'have an item like',
+
+        expectedValue
+    );
+});
+
 describe('finding files', function () {
     var g = fileHelper.getFiles;
 
@@ -51,6 +71,13 @@ describe('finding files', function () {
     it('should work recursively', function () {
         var result = g(searchPath, 'js', true);
         will(result.files.length).be(3);
+    });
+
+    it('should not look in "node_modules"', function () {
+        var dir = path.join(__dirname, '..');
+        var result = g(dir, null, true);
+
+        will(result.files).not.haveAnItemLike('node_modules');
     });
 });
 
