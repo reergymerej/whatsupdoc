@@ -5,6 +5,8 @@
 var fs = require('fs'),
     path = require('path');
 
+var ignore = ['node_modules', 'test'];
+
 /**
 * @param {String} [directory = process.cwd()]
 * @param {String} [extension = 'js']
@@ -34,8 +36,7 @@ var getFilesSync = function (directory, extension, recursive) {
         filePath = path.join(directory, files[i]);
 
         stats = fs.statSync(filePath);
-        if (recursive && files[i].indexOf('node_modules') === -1 &&
-            stats.isDirectory()) {
+        if (recursive && !isIgnore(files[i]) && stats.isDirectory()) {
                 result = result.concat(
                     getFilesSync(filePath, extension, recursive).files);
         } else {
@@ -50,6 +51,23 @@ var getFilesSync = function (directory, extension, recursive) {
         extension: extension,
         files: result
     };
+};
+
+/**
+* @description check to see if a file or directory should be ignored
+* @function isIgnore
+* @param {String} file path to file/dir
+* @return {Boolean} ignored should this be ignored
+* @private
+*/
+var isIgnore = function (file) {
+    var ignored = false;
+    ignore.forEach(function (item) {
+        if (!ignored) {
+            ignored = item.indexOf(file) > -1;
+        }
+    });
+    return ignored;
 };
 
 /**

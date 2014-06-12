@@ -79,6 +79,13 @@ describe('finding files', function () {
 
         will(result.files).not.haveAnItemLike('node_modules');
     });
+
+    it('should not look in "test"', function () {
+        var dir = path.join(__dirname, '..');
+        var result = g(dir, null, true);
+
+        will(result.files).not.haveAnItemLike('test');
+    });
 });
 
 describe('finding pattern in files', function () {
