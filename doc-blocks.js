@@ -50,7 +50,7 @@ DocBlock.prototype.stringify = function () {
 
 DocBlock.prototype.getName = function () {
     var result = '*unnamed*';
-    var possible = ['method', 'class', 'fuction'];
+    var possible = ['method', 'class', 'fuction', 'name'];
     var that = this;
     var which;
     

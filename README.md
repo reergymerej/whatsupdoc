@@ -1,212 +1,117 @@
+
 # Slut-Doc
 
-Simple Library Used To Document
+Wouldn't it be nice if you could run a command to generate documentation in your README.md?  You can with this Simple Library Used To Document.
 
-Wouldn't it be nice if you could run a command to generate documentation in your README.md?
+## How to Use
 
-====
+**Step 1**
 
+Document your code with blocks like this.
 
-### DocBlock
+```js
+/**
+* @name getSome
+* @description Get the sum of two numbers.
+* @param {Number} a the first number
+* @param {Number} b the second number
+* @return {Number}
+* @public
+*/
+getSome: function (a, b) {
+    return a + b;
+}
+```
 
+**Step 2**
 
+The clarity and maintainability of your code has undoubtably already improved, but if you want, you can run this from your terminal.
 
-privacy: not specified
+    ./slut-doc .
 
-doc-blocks.js
+This will find documentation blocks in JavaScript files and add them to the end of README.md.
 
+**Step 3**
 
+Watch the adoption rate of your beautiful code skyrocket because you made it easy for people to use.
 
-**Parameters**
+## Tags
 
+**[@class](#class)**  
+**[@description](#description)**  
+**[@function](#function)**  
+**[@method](#method)**  
+**[@name](#name)**  
+**[@param](#param)**  
+**[@private](#private)**  
+**[@protected](#protected)**  
+**[@public](#public)**  
+**[@return](#return)**  
 
-*  **filePath** *String*  
+---
 
-    
+### Simple Text
 
-*  **raw** *String*  
+These tags should be followed with arbitrary text.  Well, not arbitrary, but you know what I mean.  If needed, the text can span multiple lines.
 
-    
+<a name="description"></a>
+**@description**
 
+Do you really need a description of description?
 
+<a name="name"></a>
+<a name="method"></a>
+<a name="function"></a>
+<a name="class"></a>
+**@name**
 
+The name of the method, function, or class being documented.  You can also use **@method**, **@function**, or **@class**.
 
+---
 
-### *unnamed*
+### Optional Complexity
 
+These tags should be followed by one or more of the following optional elements *in this order*:
 
+* An indication of the type of value, wrapped in braces.  These don't have to be real types, but here are some suggestions.
 
-privacy: not specified
+    *   {String}
+    *   {Number}
+    *   {String/Number}
+    *   {String[]}
+    *   {DonkeyCake}
 
-doc-blocks.js
+* The name of the parameter we're describing.  You can also indicate a parameter is optional and its default value if you're so inclined.  Name doesn't make sense for @return, since you don't know who's handling it, but it is here for uniformity.
 
+    *   foo
+    *   [foo]
+    *   [foo=42]
 
+* A description of what the heck this thing is.  This can span multiple lines if you are particularly loquacious.
 
-**Parameters**
+<a name="param"></a>
+**@param**
 
+A parameter passed to the function.
 
-*  **items** *Object*  
+<a name="return"></a>
+**@return**
 
-    
+The value returned from the function.
 
+---
 
+### Privacy Flags
 
+Use these to indicate the intended privacy.  These tags aren't expected to be followed by anything (except an "I told you so" when someone cries after you change a private element they were depending on).
 
+<a name="private"></a>
+**@private**
 
-### *unnamed*
+<a name="protected"></a>
+**@protected**
 
+<a name="public"></a>
+**@public**
 
-
-privacy: not specified
-
-doc-blocks.js
-
-
-
-**Parameters**
-
-
-*  **[object Object]** *String*  
-
-    
-
-
-
-
-**Returns**: *Object[]* [object Object] 
-
-
-### *unnamed*
-
-
-
-privacy: not specified
-
-doc-blocks.js
-
-
-
-**Parameters**
-
-
-*  **[object Object]** *String*  
-
-    
-
-
-
-
-**Returns**: *String[]* [object Object] 
-
-
-### *unnamed*
-
-
-
-privacy: not specified
-
-file-helper.js
-
-
-
-**Parameters**
-
-
-*  **recursive** *Boolean*  
-
-    
-    *optional* - default value: 
-    
-
-*  **directory** *String*  
-
-    
-    *optional* - default value:  process.cwd()
-    
-
-*  **extension** *String*  
-
-    
-    *optional* - default value:  &#39;js&#39;
-    
-
-
-
-
-**Returns**: *Object* return 
-
-
-### *unnamed*
-
-check to see if a file or directory should be ignored
-
-privacy: private
-
-file-helper.js
-
-
-
-**Parameters**
-
-
-*  **file** *String* path to file/dir 
-
-    
-
-
-
-
-**Returns**: *Boolean* ignored should this be ignored
-
-
-### *unnamed*
-
-Get matches for regex found in a file.
-
-privacy: not specified
-
-file-helper.js
-
-
-
-**Parameters**
-
-
-*  **regex** *RegExp*  
-
-    
-
-*  **filePath** *String*  
-
-    
-
-
-
-
-**Returns**: *String[]* [object Object] 
-
-
-### *unnamed*
-
-
-
-privacy: private
-
-util.js
-
-
-
-**Parameters**
-
-
-*  **collection** *Array/Object*  
-
-    
-
-*  **fn** *Function* - item, index 
-
-    
-
-
-
-
+---
