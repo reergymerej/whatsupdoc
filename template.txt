@@ -1,25 +1,32 @@
 
-### {{ name }}
+## API
 
-{{ description }}
+{% if public %}
+### Public
 
-privacy: {{ privacy }}
+{{ public }}
 
-{{ file }}
-
-
-{% if params %}
-**Parameters**
-
-{% for param in params %}
-*  **{{ param.name }}** *{{ param.type }}* {{ param.description }} 
-
-	{% if param.optional %}
-	*optional* - default value: {{ param.default }}
-    {% endif %}
-{% endfor %}
+---
 {% endif %}
 
-{% if returns %}
-**Returns**: *{{ returns.type }}* {{ returns.name }} {{ returns.description }}
+{% if protected %}
+### Protected
+
+{{ protected }}
+
+---
+{% endif %}
+
+{% if private %}
+### Private
+
+{{ private }}
+
+---
+{% endif %}
+
+{% if '' %}
+### ?
+
+{{ '' }}
 {% endif %}

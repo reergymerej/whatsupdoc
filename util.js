@@ -15,7 +15,7 @@ var each = function (collection, fn) {
 	    } else {
 	    	for (i in collection) {
 	    		if (collection.hasOwnProperty(i)) {
-	    	    	fn(collection[i]);
+	    	    	fn(collection[i], i);
 	    		}
 	    	}
 	    }

@@ -2,10 +2,13 @@
 
 'use strict';
 
+var swig = require('swig');
 var fs = require('fs');
 var fileHelper = require('./file-helper');
 var docBlocks = require('./doc-blocks');
 var util = require('./util');
+var path = require('path');
+var fs = require('fs');
 
 // ================================================
 
@@ -25,9 +28,45 @@ var go = function (directory) {
     // find the blocks in each
     var blocks = getBlocksFromFiles(files);
 
+    blocks = groupBlocks(blocks);
+
     var result = stringify(blocks);
 
+    var readme = path.join(process.cwd(), 'README.md');
+    fs.appendFileSync(readme, result);
+
     fs.writeFileSync('api.md', result);
+};
+
+/**
+* @name groupBlocks
+* @description group blocks by privacy
+* @param {DocBlock[]} blocks
+* @return {Object}
+*/
+var groupBlocks = function (blocks) {
+    var grouped = {
+        'public': [],
+        'protected': [],
+        'private': [],
+        '': []
+    };
+
+    util.each(blocks, function (block) {
+        var which = '';
+
+        if (block.public) {
+            which = 'public';
+        } else if (block.protected) {
+            which = 'protected';
+        } else if (block.private) {
+            which = 'private';
+        }
+
+        grouped[which].push(block);
+    });
+
+    return grouped;
 };
 
 /**
@@ -65,18 +104,37 @@ var getBlocksFromFiles = function (filePaths) {
 * @description get the result of bunch of
 * stringified DocBlocks
 * @function stringify
-* @param {DocBlock[]} blocks
+* @param {Object} groupedBlocks
 * @return {String}
 * @private
 */
-var stringify = function (blocks) {
-    var str = '';
+var stringify = function (groupedBlocks) {
+    var result = '';
 
-    util.each(blocks, function (block) {
-        str += block.stringify();
-    });  
+    util.each(groupedBlocks, function (blocks, privacy) {
+        var str = '';
 
-    return str;
+        util.each(blocks, function (block) {
+            str += block.stringify();
+        });
+
+        groupedBlocks[privacy] = str;
+    });
+
+    // Now that we've got each group stringified, load up
+    // the main template.
+
+    var templateFilePath = path.join(__dirname, 'template.txt');
+    var template = swig.compileFile(templateFilePath);
+
+    groupedBlocks.foo = 'hello';
+
+    return template({
+        'private': groupedBlocks.private,
+        'protected': groupedBlocks.protected,
+        'public': groupedBlocks.public,
+        '': groupedBlocks['']
+    });
 };
 
 // ================================================

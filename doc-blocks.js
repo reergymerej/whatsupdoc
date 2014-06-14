@@ -30,7 +30,7 @@ DocBlock.prototype.groupItems = function (items) {
 };
 
 DocBlock.prototype.stringify = function () {
-    var templateFilePath = path.join(__dirname, 'template.txt');
+    var templateFilePath = path.join(__dirname, 'block-template.txt');
     var template = swig.compileFile(templateFilePath);
     var that = this;
 
@@ -50,7 +50,7 @@ DocBlock.prototype.stringify = function () {
 
 DocBlock.prototype.getName = function () {
     var result = '*unnamed*';
-    var possible = ['method', 'class', 'fuction', 'name'];
+    var possible = ['method', 'class', 'function', 'name'];
     var that = this;
     var which;
     
@@ -96,8 +96,8 @@ var getItems = function (raw) {
     /**
     * @function getRawItems
     * @description Identify each item in the doc block.
-    * @param {String}
-    * @return {String[]}
+    * @param {String} raw
+    * @return {String[]} strings
     * @private
     */
     var getRawItems = function (raw) {
