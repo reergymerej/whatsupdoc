@@ -92,12 +92,12 @@ These tags should be followed by one or more of the following optional elements 
 <a name="param"></a>
 **@param**
 
-A parameter passed to the function.
+A parameter passed to the function.  *See above for options.*
 
 <a name="return"></a>
 **@return**
 
-The value returned from the function.
+The value returned from the function.  *See above for options.*
 
 ---
 
@@ -113,5 +113,3 @@ Use these to indicate the intended privacy.  These tags aren't expected to be fo
 
 <a name="public"></a>
 **@public**
-
----
