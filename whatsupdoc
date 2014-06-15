@@ -15,7 +15,7 @@ var fs = require('fs');
 var settings = {
     docBlockRegex: /\/\*{2,}(.|[\r\n])+?\*\//g,
 
-    // TODO: This should be pulled from .slutdocrc.
+    // TODO: This should be pulled from .whatsupdocrc.
     destinationFile: path.join(process.cwd(), 'README.md')
 };
 
@@ -64,7 +64,7 @@ var writeResults = function (results) {
 * @private
 */
 var insertDocs = function (target, docs) {
-    var regex = /<!--- slut-doc-start(\n|.)+slut-doc-end -->\n/g;
+    var regex = /<!--- whatsupdoc-start(\n|.)+whatsupdoc-end -->\n/g;
 
     if (regex.test(target)) {
         target = target.replace(regex, docs);
@@ -176,7 +176,7 @@ var stringify = function (groupedBlocks) {
 
 /**
 * @name configure
-* @description Configure slut-doc to do what you want.
+* @description Configure global settings.
 * @param 
 * @public {String} name setting name
 * @public value setting value

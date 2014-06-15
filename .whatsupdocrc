@@ -3,7 +3,7 @@
         "js"
     ],
     "include": [
-        "slut-doc"
+        "file-with-no-extension"
     ],
     "exclude": [
         "node_modules",

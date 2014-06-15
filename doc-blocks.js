@@ -6,8 +6,8 @@ var fs = require('fs'),
     util = require('./util');
 
 /**
-* @description an object used to represent a block of documentation
 * @class DocBlock
+* @description an object used to represent a block of documentation
 * @param {String} raw the text found that will be converted into a DocBlock
 * @param {String} filePath the file the block was found in
 */
@@ -18,6 +18,7 @@ var DocBlock = function (raw, filePath) {
 };
 
 /**
+* @name groupItems
 * @param {Object} items
 */
 DocBlock.prototype.groupItems = function (items) {

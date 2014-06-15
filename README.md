@@ -1,7 +1,6 @@
+# Whats Up Doc
 
-# Slut-Doc
-
-Wouldn't it be nice if you could run a command to generate documentation in your README.md?  You can with this Simple Library Used To Document.
+Generate pretty API docs in your project's README.
 
 ## How to Use
 
@@ -30,7 +29,7 @@ getSome: function (a, b) {
 
 The clarity and maintainability of your code has undoubtably already improved, but if you want, you can run this from your terminal.
 
-    ./slut-doc .
+    ./whatsupdoc .
 
 This will find documentation blocks in JavaScript files and add them to the end of README.md.
 
@@ -117,4 +116,3 @@ Use these to indicate the intended privacy.  These tags aren't expected to be fo
 <a name="public"></a>
 **@public**
 
----

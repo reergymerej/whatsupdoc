@@ -1,5 +1,8 @@
+'use strict';
+
 /**
-* Iterate over an Array/Object.
+* @name each
+* @description Iterate over an Array/Object.
 * @param {Array/Object} collection
 * @param {Function} fn - item, index
 * @private

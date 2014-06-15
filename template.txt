@@ -1,9 +1,7 @@
-<!--- slut-doc-start -->
-
-## API
+<!--- whatsupdoc-start -->
 
 {% if public %}
-### Public
+## Public
 
 {{ public }}
 
@@ -11,7 +9,7 @@
 {% endif %}
 
 {% if protected %}
-### Protected
+## Protected
 
 {{ protected }}
 
@@ -19,7 +17,7 @@
 {% endif %}
 
 {% if private %}
-### Private
+## Private
 
 {{ private }}
 
@@ -27,9 +25,9 @@
 {% endif %}
 
 {% if '' %}
-### ?
+## ?
 
 {{ '' }}
 {% endif %}
 
-<!--- slut-doc-end -->
+<!--- whatsupdoc-end -->

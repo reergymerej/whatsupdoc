@@ -1,5 +1,3 @@
-// TODO: This should be broken out into its own module.
-
 'use strict';
 
 var fs = require('fs'),
@@ -8,15 +6,15 @@ var fs = require('fs'),
 var ignore = ['node_modules', 'test'];
 
 /**
-* @param {String} [directory = process.cwd()]
-* @param {String} [extension = 'js']
-* @param {Boolean} [recursive]
-* @return {Object} return
-* @return {String} return.path
-* @return {String} return.extension
-* @return {String[]} return.files
+* @name getFiles
+* @description get an Array of file paths
+* @param {String} [directory = process.cwd()] the directory to search in
+* @param {String} [extension = 'js'] the extension to search for
+* @param {Boolean} [recursive] search for files recursively
+* @return {Object} return contains path, extension, and an Array of files
+* @public
 */
-var getFilesSync = function (directory, extension, recursive) {
+var getFiles = function (directory, extension, recursive) {
 
     var files;
     var result = [];
@@ -38,7 +36,7 @@ var getFilesSync = function (directory, extension, recursive) {
         stats = fs.statSync(filePath);
         if (recursive && !isIgnore(files[i]) && stats.isDirectory()) {
                 result = result.concat(
-                    getFilesSync(filePath, extension, recursive).files);
+                    getFiles(filePath, extension, recursive).files);
         } else {
             if (regex.test(files[i])) {
                 result.push(filePath);
@@ -54,8 +52,8 @@ var getFilesSync = function (directory, extension, recursive) {
 };
 
 /**
+* @name isIgnore
 * @description check to see if a file or directory should be ignored
-* @function isIgnore
 * @param {String} file path to file/dir
 * @return {Boolean} ignored should this be ignored
 * @private
@@ -71,11 +69,12 @@ var isIgnore = function (file) {
 };
 
 /**
-* @function getMatches
+* @name getMatches
 * @description Get matches for regex found in a file.
 * @param {String} filePath
 * @param {RegExp} regex
 * @return {String[]}
+* @public
 */
 var getMatches = function (filePath, regex) {
     var matches = [];
@@ -95,6 +94,7 @@ var getMatches = function (filePath, regex) {
 * doesn't exist yet.
 * @param {String} filePath
 * @return {String}
+* @public
 */
 var readFileSync = function (filePath) {
     // open the file
@@ -115,6 +115,6 @@ var readFileSync = function (filePath) {
     return text;
 };
 
-exports.getFiles = getFilesSync;
+exports.getFiles = getFiles;
 exports.getMatches = getMatches;
 exports.readFileSync = readFileSync;

@@ -1,8 +1,8 @@
 {
-  "name": "slut-doc",
+  "name": "whatsupdoc",
   "version": "0.0.0",
-  "description": "Simple Library Used To Document",
-  "main": "index.js",
+  "description": "Generate pretty API docs in your project's README.",
+  "main": "whatsupdoc",
   "directories": {
     "test": "test"
   },
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://reergymerej@github.com/reergymerej/slut-doc.git"
+    "url": "https://reergymerej@github.com/reergymerej/whatsupdoc.git"
   },
   "author": "Jeremy Greer <jeremy.greer.atl@gmail.com> (http://jeremygreer.herokuapp.com/)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/reergymerej/slut-doc/issues"
+    "url": "https://github.com/reergymerej/whatsupdoc/issues"
   },
-  "homepage": "https://github.com/reergymerej/slut-doc",
+  "homepage": "https://github.com/reergymerej/whatsupdoc",
   "devDependencies": {
     "mocha": "~1.20.1",
     "willy": "~0.2.4",

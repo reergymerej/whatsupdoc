@@ -1,5 +1,4 @@
 
----
 #### {{ name }}  
 {{ description }}
 
@@ -7,16 +6,14 @@
 **Parameters**
 
 {% for param in params %}
-*  **{{ param.name }}** *{{ param.type }}* {{ param.description }} 
-
-    {% if param.optional %}
-    *optional* - default value: {{ param.default }}
-    {% endif %}
+*  **{{ param.name }}** *{{ param.type }}*
+    {% if param.optional %}optional{% endif %}  
+    {{ param.description }}  
+    {% if param.default %}defaults to: {{ param.default }}{% endif %}
 {% endfor %}
 {% endif %}
 
 {% if returns %}
-**Returns**: *{{ returns.type }}* {{ returns.name }} {{ returns.description }}
+**Returns**: *{{ returns.type }}*  
+{{ returns.description }}
 {% endif %}
-
-defined in {{ file }}

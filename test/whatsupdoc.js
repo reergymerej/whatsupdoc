@@ -7,7 +7,7 @@ var path = require('path'),
     mocha = require('mocha'),
     willy = require('willy'),
     will = willy.will,
-    slutDoc = require('../slut-doc'),
+    whatsupdoc = require('../whatsupdoc'),
     docBlocks = require('../doc-blocks');
 
 var searchPath = path.join(__dirname, 'dummy-source');
@@ -46,7 +46,7 @@ describe('generating docs', function () {
     };
 
     beforeEach(function () {
-        slutDoc.configure('destinationFile', outputFilePath);
+        whatsupdoc.configure('destinationFile', outputFilePath);
     });
 
     afterEach(function () {
@@ -55,7 +55,7 @@ describe('generating docs', function () {
     
     it('should add text to the file', function () {
         var startSize = getFileSize();
-        var result = slutDoc.go(searchPath);
+        var result = whatsupdoc.go(searchPath);
         var endSize = getFileSize();
 
         will(startSize).beLessThan(endSize);
@@ -63,9 +63,9 @@ describe('generating docs', function () {
 
     it('should replace existing docs when run multiple times', function () {
         var fs1, fs2;
-        slutDoc.go(searchPath);
+        whatsupdoc.go(searchPath);
         fs1 = getFileSize();
-        slutDoc.go(searchPath);
+        whatsupdoc.go(searchPath);
         fs2 = getFileSize();
 
         will(fs2).be(fs1);
