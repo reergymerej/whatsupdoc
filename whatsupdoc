@@ -176,13 +176,34 @@ var stringify = function (groupedBlocks) {
 
 /**
 * @name configure
-* @description Configure global settings.
-* @param 
-* @public {String} name setting name
+* @description Get/set global settings.  If no args, return all settings.
+* If just name, return that setting.  If name & value, set that setting.
+* @param {String/Object} [name] setting name - Optionally pass a an Object
+* to set multiple values at once.
+* @param [value]
 * @public value setting value
+* @return {Object/String/Number/Boolean} setting Depending on what args
+* were passed, this can return all settings as an Object or one setting's
+* value.
 */
 var configure = function (name, value) {
-    settings[name] = value;
+    var result,
+        args = arguments.length;
+
+    if (args === 1) {
+
+        if (!(name instanceof Object)) {
+            result = settings[name];
+        } else {
+            util.each(name, function (value, key) {
+                settings[key] = value;
+            });
+        }
+    } else if (args === 2) {
+        settings[name] = value;
+    }
+
+    return result === undefined ? settings : result;
 };
 
 // ================================================
