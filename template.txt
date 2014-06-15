@@ -1,3 +1,4 @@
+<!--- slut-doc-start -->
 
 ## API
 
@@ -30,3 +31,5 @@
 
 {{ '' }}
 {% endif %}
+
+<!--- slut-doc-end -->

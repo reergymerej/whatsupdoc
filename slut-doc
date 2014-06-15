@@ -32,10 +32,43 @@ var go = function (directory) {
 
     var result = stringify(blocks);
 
-    var readme = path.join(process.cwd(), 'README.md');
-    fs.appendFileSync(readme, result);
+    writeResults(result);
+};
 
-    fs.writeFileSync('api.md', result);
+/**
+* @name writeResults
+* @description Writes the api doc string into the
+* destination file.
+* @param {String} results
+* @private
+*/
+var writeResults = function (results) {
+    // TODO: This should be pulled from .slutdocrc.
+    var destinationFile = path.join(process.cwd(), 'README.md');
+    var destinationText = fileHelper.readFileSync(destinationFile);
+    var newText = insertDocs(destinationText, results);
+    fs.writeFileSync(destinationFile, newText);
+};
+
+/**
+* @name insertDocs
+* @description Inserts docs at the proper place into another string.
+* This will replace old docs if found.
+* @param {String} target the string docs will be inserted into
+* @param {String} docs
+* @return {String} updated the updated target 
+* @private
+*/
+var insertDocs = function (target, docs) {
+    var regex = /<!--- slut-doc-start(\n|.)+slut-doc-end -->\n/g;
+
+    if (regex.test(target)) {
+        target = target.replace(regex, docs);
+    } else {
+        target += docs;
+    }
+
+    return target;
 };
 
 /**

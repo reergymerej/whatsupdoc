@@ -107,7 +107,7 @@ describe('finding pattern in files', function () {
     });
 });
 
-describe.only('reading files with buffers', function () {
+describe('reading files with buffers', function () {
 
     it('should get the contents of a file', function () {
         var filePath = path.join(__dirname, 'dummy-source/read.txt');

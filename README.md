@@ -14,11 +14,14 @@ Document your code with blocks like this.
 * @name getSome
 * @description Get the sum of two numbers.
 * @param {Number} a the first number
-* @param {Number} b the second number
+* @param {Number} [b=3.14] the second number
 * @return {Number}
 * @public
 */
 getSome: function (a, b) {
+    if (b === undefined) {
+        b = 3.14;
+    }
     return a + b;
 }
 ```
@@ -115,5 +118,3 @@ Use these to indicate the intended privacy.  These tags aren't expected to be fo
 **@public**
 
 ---
-
-
