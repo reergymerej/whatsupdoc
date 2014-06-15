@@ -105,3 +105,12 @@ describe('finding pattern in files', function () {
         will(matches).beAn(Array);
     });
 });
+
+describe.only('reading files with buffers', function () {
+    var filePath = path.join(__dirname, 'dummy-source/read.txt');
+
+    it('should get the contents of a file', function () {
+        var result = fileHelper.readFileSync(filePath);
+        will(result).be('This is cool.');
+    });
+});
