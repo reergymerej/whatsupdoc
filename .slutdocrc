@@ -1,0 +1,14 @@
+{
+    "extentions": [
+        "js"
+    ],
+    "include": [
+        "slut-doc"
+    ],
+    "exclude": [
+        "node_modules",
+        "test"
+    ],
+    "groupBy": "privacy",
+    "outputFile": "README.md"
+}
