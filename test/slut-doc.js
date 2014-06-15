@@ -1,5 +1,7 @@
 'use strict';
 
+/* global beforeEach, afterEach */
+
 var path = require('path'),
     fs = require('fs'),
     mocha = require('mocha'),
@@ -31,17 +33,26 @@ willy.addTest(function beLessThan(expectedValue) {
 });
 
 describe('generating docs', function () {
-    var outputFilePath = path.join(__dirname, '..', 'README.md');
+    var outputFilePath = path.join(__dirname, 'README.md');
     
     var getFileSize = function () {
-        return fs.statSync(outputFilePath).size;
+        var size;
+        try {
+            size = fs.statSync(outputFilePath).size;
+        } catch (e) {
+            size = 0;
+        }
+        return size;
     };
+
+    beforeEach(function () {
+        slutDoc.configure('destinationFile', outputFilePath);
+    });
+
+    afterEach(function () {
+        fs.unlinkSync(outputFilePath);
+    });
     
-    // TODO: Fix this.
-    // This test is no good since the existing docs will be replaced
-    // if they already exist.  We need to use a test README that we
-    // can destroy after each test, but that requires a configurable
-    // destination.
     it('should add text to the file', function () {
         var startSize = getFileSize();
         var result = slutDoc.go(searchPath);
@@ -51,9 +62,11 @@ describe('generating docs', function () {
     });
 
     it('should replace existing docs when run multiple times', function () {
-        var fs1 = getFileSize();
-        var result = slutDoc.go(searchPath);
-        var fs2 = getFileSize();
+        var fs1, fs2;
+        slutDoc.go(searchPath);
+        fs1 = getFileSize();
+        slutDoc.go(searchPath);
+        fs2 = getFileSize();
 
         will(fs2).be(fs1);
     });

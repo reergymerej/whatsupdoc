@@ -12,7 +12,12 @@ var fs = require('fs');
 
 // ================================================
 
-var docBlockRegex = /\/\*{2,}(.|[\r\n])+?\*\//g;
+var settings = {
+    docBlockRegex: /\/\*{2,}(.|[\r\n])+?\*\//g,
+
+    // TODO: This should be pulled from .slutdocrc.
+    destinationFile: path.join(process.cwd(), 'README.md')
+};
 
 /**
 * @description generate the API docs
@@ -43,8 +48,7 @@ var go = function (directory) {
 * @private
 */
 var writeResults = function (results) {
-    // TODO: This should be pulled from .slutdocrc.
-    var destinationFile = path.join(process.cwd(), 'README.md');
+    var destinationFile = settings.destinationFile;
     var destinationText = fileHelper.readFileSync(destinationFile);
     var newText = insertDocs(destinationText, results);
     fs.writeFileSync(destinationFile, newText);
@@ -125,7 +129,7 @@ var getBlocksFromFiles = function (filePaths) {
     };
 
     util.each(filePaths, function (filePath) {
-        var rawBlocks = fileHelper.getMatches(filePath, docBlockRegex);
+        var rawBlocks = fileHelper.getMatches(filePath, settings.docBlockRegex);
 
         result = result.concat(getBlocks(rawBlocks, filePath));
     });
@@ -170,6 +174,17 @@ var stringify = function (groupedBlocks) {
     });
 };
 
+/**
+* @name configure
+* @description Configure slut-doc to do what you want.
+* @param 
+* @public {String} name setting name
+* @public value setting value
+*/
+var configure = function (name, value) {
+    settings[name] = value;
+};
+
 // ================================================
 
 // TODO: Figure out a better way to determine if
@@ -182,4 +197,5 @@ if (dir && dir !== '--reporter') {
     go(dir);
 } else {
     exports.go = go;
+    exports.configure = configure;
 }
