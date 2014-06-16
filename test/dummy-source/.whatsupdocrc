@@ -1,3 +1,14 @@
 {
-    "test file": "true"
+    "extentions": [
+        "js"
+    ],
+    "include": [
+        "file-with-no-extension"
+    ],
+    "exclude": [
+        "node_modules",
+        "test"
+    ],
+    "groupBy": "privacy",
+    "outputFile": "README.md"
 }

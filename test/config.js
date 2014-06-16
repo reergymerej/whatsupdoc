@@ -63,7 +63,7 @@ describe('initializing config', function () {
     it('should start with default values', function () {
         var settings;
 
-        whatsupdoc.init(path.join(__dirname, 'dummy-source'));
+        whatsupdoc.init(dir);
         settings = whatsupdoc.configure();
 
         will(settings).have(['extensions', 'include', 'exclude', 'outputFile']);
