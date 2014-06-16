@@ -12,16 +12,22 @@ var fs = require('fs');
 
 // global settings
 var settings = {};
+var directory;
 
 /**
 * @name init
 * @description Initialize global settings.  This is done automatically,
 * but you can call it again in case you screwed something up.
+* @param {String} [dir] The directory to be scanned.
 * @public
 */
-var init = function () {
+var init = function (dir) {
 
     var rc;
+
+    if (dir) {
+        directory = dir;
+    }
 
     // set defaults
     settings = {
@@ -32,9 +38,21 @@ var init = function () {
         outputFile: 'README.md'
     };
 
+    rc = getConfigFileContents();
+};
+
+/**
+* @name getConfigFileContents
+* @description get the text of the config file, whereever it is
+* @return {String}
+*/
+var getConfigFileContents = function () {
+    var contents = '',
+        rc;
+
     // check for .whatsupdocrc
     try {
-        rc = fs.readFileSync(path.join(process.cwd(), '.whatsupdocrc'), 'utf-8');
+        rc = fs.readFileSync(path.join(directory, '.whatsupdocrc'), 'utf-8');
         
     } catch (e) {
         console.log(e);
@@ -48,17 +66,21 @@ var init = function () {
             throw new Error('.whatsupdocrc JSON is invalid');
         }
     }
+
+    return contents;
 };
 
 /**
 * @description generate the API docs
 * @method go
-* @param {String} [directory = process.cwd()]
+* @param {String} [dir = process.cwd()]
 * @public
 */
-var go = function (directory) {
+var go = function (dir) {
     
     var files, blocks, result;
+
+    directory = dir;
 
     init();
     
@@ -83,7 +105,7 @@ var go = function (directory) {
 * @private
 */
 var writeResults = function (results) {
-    var destinationFile = path.join(process.cwd(), settings.outputFile);
+    var destinationFile = path.join(directory, settings.outputFile);
     var destinationText = fileHelper.readFileSync(destinationFile);
     var newText = insertDocs(destinationText, results);
     fs.writeFileSync(destinationFile, newText);

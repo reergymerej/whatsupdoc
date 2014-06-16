@@ -45,25 +45,25 @@ describe('getting/setting config options', function () {
     });
 });
 
-describe.only('initializing config', function () {
-    var dir = process.cwd();
+describe('initializing config', function () {
+    var dir = path.join(__dirname, 'dummy-source');
 
-    beforeEach(function () {
-        var oldName = path.join(dir, '.whatsupdocrc');
-        var newName = path.join(dir, '.whatsupdocrc_');
-        fs.renameSync(oldName, newName);
-    });
+    // beforeEach(function () {
+    //     var oldName = path.join(dir, '.whatsupdocrc');
+    //     var newName = path.join(dir, '.whatsupdocrc_');
+    //     fs.renameSync(oldName, newName);
+    // });
 
-    afterEach(function () {
-        var oldName = path.join(dir, '.whatsupdocrc_');
-        var newName = path.join(dir, '.whatsupdocrc');
-        fs.renameSync(oldName, newName);
-    });
+    // afterEach(function () {
+    //     var oldName = path.join(dir, '.whatsupdocrc_');
+    //     var newName = path.join(dir, '.whatsupdocrc');
+    //     fs.renameSync(oldName, newName);
+    // });
 
     it('should start with default values', function () {
         var settings;
 
-        whatsupdoc.init();
+        whatsupdoc.init(path.join(__dirname, 'dummy-source'));
         settings = whatsupdoc.configure();
 
         will(settings).have(['extensions', 'include', 'exclude', 'outputFile']);
