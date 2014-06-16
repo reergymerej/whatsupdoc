@@ -5,7 +5,9 @@
 var mocha = require('mocha'),
     willy = require('willy'),
     will = willy.will,
-    whatsupdoc = require('../whatsupdoc');
+    whatsupdoc = require('../whatsupdoc'),
+    fs = require('fs'),
+    path = require('path');
 
 describe('getting/setting config options', function () {
 
@@ -40,5 +42,37 @@ describe('getting/setting config options', function () {
         });
 
         will(whatsupdoc.configure()).have('abcd'.split(''));
+    });
+});
+
+describe.only('initializing config', function () {
+    var dir = process.cwd();
+
+    beforeEach(function () {
+        var oldName = path.join(dir, '.whatsupdocrc');
+        var newName = path.join(dir, '.whatsupdocrc_');
+        fs.renameSync(oldName, newName);
+    });
+
+    afterEach(function () {
+        var oldName = path.join(dir, '.whatsupdocrc_');
+        var newName = path.join(dir, '.whatsupdocrc');
+        fs.renameSync(oldName, newName);
+    });
+
+    it('should start with default values', function () {
+        var settings;
+
+        whatsupdoc.init();
+        settings = whatsupdoc.configure();
+
+        will(settings).have(['extensions', 'include', 'exclude', 'outputFile']);
+
+    });
+
+    it('should set values based on .whatsupdocrc', function () {
+        // create config file
+        // var filePath = path.join()
+        console.log(process.cwd());
     });
 });

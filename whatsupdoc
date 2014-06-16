@@ -10,13 +10,44 @@ var util = require('./util');
 var path = require('path');
 var fs = require('fs');
 
-// ================================================
+// global settings
+var settings = {};
 
-var settings = {
-    docBlockRegex: /\/\*{2,}(.|[\r\n])+?\*\//g,
+/**
+* @name init
+* @description Initialize global settings.  This is done automatically,
+* but you can call it again in case you screwed something up.
+* @public
+*/
+var init = function () {
 
-    // TODO: This should be pulled from .whatsupdocrc.
-    destinationFile: path.join(process.cwd(), 'README.md')
+    var rc;
+
+    // set defaults
+    settings = {
+        docBlockRegex: /\/\*{2,}(.|[\r\n])+?\*\//g,
+        extensions: ['js'],
+        include: [],
+        exclude: ['node_modules', 'test'],
+        outputFile: 'README.md'
+    };
+
+    // check for .whatsupdocrc
+    try {
+        rc = fs.readFileSync(path.join(process.cwd(), '.whatsupdocrc'), 'utf-8');
+        
+    } catch (e) {
+        console.log(e);
+        console.log('no config file');
+    }
+
+    if (rc) {
+        try {
+            rc = JSON.parse(rc);
+        } catch (e) {
+            throw new Error('.whatsupdocrc JSON is invalid');
+        }
+    }
 };
 
 /**
@@ -27,15 +58,19 @@ var settings = {
 */
 var go = function (directory) {
     
+    var files, blocks, result;
+
+    init();
+    
     // find the files
-    var files = fileHelper.getFiles(directory, null, true).files;
+    files = fileHelper.getFiles(directory, null, true).files;
 
     // find the blocks in each
-    var blocks = getBlocksFromFiles(files);
+    blocks = getBlocksFromFiles(files);
 
     blocks = groupBlocks(blocks);
 
-    var result = stringify(blocks);
+    result = stringify(blocks);
 
     writeResults(result);
 };
@@ -48,7 +83,7 @@ var go = function (directory) {
 * @private
 */
 var writeResults = function (results) {
-    var destinationFile = settings.destinationFile;
+    var destinationFile = path.join(process.cwd(), settings.outputFile);
     var destinationText = fileHelper.readFileSync(destinationFile);
     var newText = insertDocs(destinationText, results);
     fs.writeFileSync(destinationFile, newText);
@@ -217,6 +252,7 @@ var dir = process.argv[2];
 if (dir && dir !== '--reporter') {
     go(dir);
 } else {
-    exports.go = go;
+    exports.init = init;
     exports.configure = configure;
+    exports.go = go;
 }
