@@ -33,7 +33,8 @@ willy.addTest(function beLessThan(expectedValue) {
 });
 
 describe('generating docs', function () {
-    var outputFilePath = path.join(__dirname, 'README.md');
+    var dir = path.join(__dirname, 'dummy-source');
+    var outputFilePath = path.join(dir, 'README.md');
     
     var getFileSize = function () {
         var size;

@@ -116,3 +116,91 @@ Use these to indicate the intended privacy.  These tags aren't expected to be fo
 <a name="public"></a>
 **@public**
 
+<!--- whatsupdoc-start -->
+
+
+
+
+## Protected
+
+
+#### eatAChicken  
+Make this widget eat a chicken and report back how long it took.
+
+
+**Parameters**
+
+
+*  **fried** *Boolean*
+    optional  
+    if not fried, it will be raw  
+    defaults to: true
+
+*  **spices** *String[]*
+      
+    what spices should be added to the chicken  
+    
+
+
+
+
+**Returns**: *Number*  
+required to eat chicken
+
+
+
+---
+
+
+
+## Private
+
+
+#### *unnamed*  
+
+
+
+
+
+
+#### someCoolioMethod  
+This is a doc block description.
+
+
+**Parameters**
+
+
+*  **optionalValWithDefault** *AnotherType*
+    optional  
+      
+    defaults to:  &#39;blah&#39;
+
+*  **optionalValue** *AnotherType*
+    optional  
+      
+    
+
+*  **anotherValue** *AnotherType*
+      
+      
+    
+
+*  **value** *Type*
+      
+      
+    
+
+
+
+
+**Returns**: *ReturnType*  
+
+
+
+
+---
+
+
+
+
+<!--- whatsupdoc-end -->

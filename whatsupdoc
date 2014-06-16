@@ -10,32 +10,89 @@ var util = require('./util');
 var path = require('path');
 var fs = require('fs');
 
-// ================================================
+// global settings
+var settings = {};
+var directory;
 
-var settings = {
-    docBlockRegex: /\/\*{2,}(.|[\r\n])+?\*\//g,
+/**
+* @name init
+* @description Initialize global settings.  This is done automatically,
+* but you can call it again in case you screwed something up.
+* @param {String} [dir] The directory to be scanned.
+* @public
+*/
+var init = function (dir) {
 
-    // TODO: This should be pulled from .whatsupdocrc.
-    destinationFile: path.join(process.cwd(), 'README.md')
+    var rc;
+
+    if (dir) {
+        directory = dir;
+    }
+
+    // set defaults
+    settings = {
+        docBlockRegex: /\/\*{2,}(.|[\r\n])+?\*\//g,
+        extensions: ['js'],
+        include: [],
+        exclude: ['node_modules', 'test'],
+        outputFile: 'README.md'
+    };
+
+    rc = getConfigFileContents();
+};
+
+/**
+* @name getConfigFileContents
+* @description get the text of the config file, whereever it is
+* @return {String}
+*/
+var getConfigFileContents = function () {
+    var contents = '',
+        rc;
+
+    // check for .whatsupdocrc
+    try {
+        rc = fs.readFileSync(path.join(directory, '.whatsupdocrc'), 'utf-8');
+        
+    } catch (e) {
+        console.log(e);
+        console.log('no config file');
+    }
+
+    if (rc) {
+        try {
+            rc = JSON.parse(rc);
+        } catch (e) {
+            throw new Error('.whatsupdocrc JSON is invalid');
+        }
+    }
+
+    return contents;
 };
 
 /**
 * @description generate the API docs
 * @method go
-* @param {String} [directory = process.cwd()]
+* @param {String} [dir = process.cwd()]
 * @public
 */
-var go = function (directory) {
+var go = function (dir) {
+    
+    var files, blocks, result;
+
+    directory = dir;
+
+    init();
     
     // find the files
-    var files = fileHelper.getFiles(directory, null, true).files;
+    files = fileHelper.getFiles(directory, null, true).files;
 
     // find the blocks in each
-    var blocks = getBlocksFromFiles(files);
+    blocks = getBlocksFromFiles(files);
 
     blocks = groupBlocks(blocks);
 
-    var result = stringify(blocks);
+    result = stringify(blocks);
 
     writeResults(result);
 };
@@ -48,7 +105,7 @@ var go = function (directory) {
 * @private
 */
 var writeResults = function (results) {
-    var destinationFile = settings.destinationFile;
+    var destinationFile = path.join(directory, settings.outputFile);
     var destinationText = fileHelper.readFileSync(destinationFile);
     var newText = insertDocs(destinationText, results);
     fs.writeFileSync(destinationFile, newText);
@@ -176,13 +233,34 @@ var stringify = function (groupedBlocks) {
 
 /**
 * @name configure
-* @description Configure global settings.
-* @param 
-* @public {String} name setting name
+* @description Get/set global settings.  If no args, return all settings.
+* If just name, return that setting.  If name & value, set that setting.
+* @param {String/Object} [name] setting name - Optionally pass a an Object
+* to set multiple values at once.
+* @param [value]
 * @public value setting value
+* @return {Object/String/Number/Boolean} setting Depending on what args
+* were passed, this can return all settings as an Object or one setting's
+* value.
 */
 var configure = function (name, value) {
-    settings[name] = value;
+    var result,
+        args = arguments.length;
+
+    if (args === 1) {
+
+        if (!(name instanceof Object)) {
+            result = settings[name];
+        } else {
+            util.each(name, function (value, key) {
+                settings[key] = value;
+            });
+        }
+    } else if (args === 2) {
+        settings[name] = value;
+    }
+
+    return result === undefined ? settings : result;
 };
 
 // ================================================
@@ -196,6 +274,7 @@ var dir = process.argv[2];
 if (dir && dir !== '--reporter') {
     go(dir);
 } else {
-    exports.go = go;
+    exports.init = init;
     exports.configure = configure;
+    exports.go = go;
 }
