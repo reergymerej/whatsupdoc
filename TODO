@@ -1,0 +1,18 @@
+
+setup config
+    - find config file or use default
+
+find files
+
+find documentation in files
+
+create DocBlocks
+    - parse elements
+
+filter DocBlocks
+
+group DocBlocks
+
+stringify
+
+insert into target
