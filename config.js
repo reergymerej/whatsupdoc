@@ -4,7 +4,12 @@ var path = require('path'),
     fs = require('fs');
 
 var defaultConfig = {
-    default: true
+    default: true,
+    docBlockRegex: /\/\*{2,}(.|[\r\n])+?\*\//g,
+    extensions: ['js'],
+    include: [],
+    exclude: ['node_modules', 'test'],
+    outputFile: 'README.md'
 };
 
 var FILENAME = '.whatsupdocrc';
@@ -17,10 +22,16 @@ var FILENAME = '.whatsupdocrc';
 * @return {Object}
 */
 var getConfig = function (directory) {
-    var config = defaultConfig;
-
+    var config = {};
+    var loadedConfig;
     var file = path.join(directory, FILENAME);
     var text;
+    var keys;
+
+    keys = Object.keys(defaultConfig);
+    keys.forEach(function (key) {
+        config[key] = defaultConfig[key];
+    });
 
     try {
         text = fs.readFileSync(file, 'utf-8');
@@ -29,7 +40,15 @@ var getConfig = function (directory) {
     }
 
     if (text) {
-        config = JSON.parse(text);
+
+        // Merge runtime config with settings.
+        loadedConfig = JSON.parse(text);
+
+        keys = Object.keys(loadedConfig);
+        keys.forEach(function (key) {
+            config[key] = loadedConfig[key];
+        });
+        delete config.default;
     }
 
     return config;
