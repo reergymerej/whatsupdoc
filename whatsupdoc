@@ -4,7 +4,9 @@
 
 var swig = require('swig');
 var fs = require('fs');
+var config = require('./config');
 var fileHelper = require('./file-helper');
+var patternFinder = require('./pattern-finder');
 var docBlocks = require('./doc-blocks');
 var util = require('./util');
 var path = require('path');
@@ -23,51 +25,12 @@ var directory;
 */
 var init = function (dir) {
 
-    var rc;
-
     if (dir) {
         directory = dir;
     }
 
     // set defaults
-    settings = {
-        docBlockRegex: /\/\*{2,}(.|[\r\n])+?\*\//g,
-        extensions: ['js'],
-        include: [],
-        exclude: ['node_modules', 'test'],
-        outputFile: 'README.md'
-    };
-
-    rc = getConfigFileContents();
-};
-
-/**
-* @name getConfigFileContents
-* @description get the text of the config file, whereever it is
-* @return {String}
-*/
-var getConfigFileContents = function () {
-    var contents = '',
-        rc;
-
-    // check for .whatsupdocrc
-    try {
-        rc = fs.readFileSync(path.join(directory, '.whatsupdocrc'), 'utf-8');
-        
-    } catch (e) {
-        console.log(e);
-        console.log('no config file');
-    }
-
-    if (rc) {
-        try {
-            rc = JSON.parse(rc);
-        } catch (e) {
-            throw new Error('.whatsupdocrc JSON is invalid');
-        }
-    }
-
-    return contents;
+    settings = config.getConfig(dir);
 };
 
 /**
@@ -82,7 +45,7 @@ var go = function (dir) {
 
     directory = dir;
 
-    init();
+    init(dir);
     
     // find the files
     files = fileHelper.getFiles(directory, null, true).files;
@@ -186,8 +149,7 @@ var getBlocksFromFiles = function (filePaths) {
     };
 
     util.each(filePaths, function (filePath) {
-        var rawBlocks = fileHelper.getMatches(filePath, settings.docBlockRegex);
-
+        var rawBlocks = patternFinder.findPattern(settings.docBlockRegex, filePath);
         result = result.concat(getBlocks(rawBlocks, filePath));
     });
 
