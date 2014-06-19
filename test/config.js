@@ -77,7 +77,7 @@ var mocha = require('mocha'),
 //     });
 // });
 
-describe.only('getting the configuration', function () {
+describe('getting the configuration', function () {
     it('should return an object', function () {
         var c = config.getConfig(path.join(__dirname, 'config'));
         will(c).beAn(Object);
