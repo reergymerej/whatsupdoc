@@ -6,6 +6,7 @@ var swig = require('swig');
 var fs = require('fs');
 var config = require('./config');
 var fileHelper = require('./file-helper');
+var fileFinder = require('./file-finder');
 var patternFinder = require('./pattern-finder');
 var docBlocks = require('./doc-blocks');
 var util = require('./util');
@@ -48,7 +49,7 @@ var go = function (dir) {
     init(dir);
     
     // find the files
-    files = fileHelper.getFiles(directory, null, true).files;
+    files = fileFinder.getFiles(directory, 'js');
 
     // find the blocks in each
     blocks = getBlocksFromFiles(files);

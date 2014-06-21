@@ -51,7 +51,11 @@ describe('generating docs', function () {
     });
 
     afterEach(function () {
-        fs.unlinkSync(outputFilePath);
+        try {
+            fs.unlinkSync(outputFilePath);
+        } catch (e) {
+            
+        }
     });
     
     it('should add text to the file', function () {

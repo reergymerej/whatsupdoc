@@ -49,46 +49,6 @@ willy.addTest(function haveAnItemLike(expectedValue) {
     );
 });
 
-describe('finding files', function () {
-    var g = fileHelper.getFiles;
-
-    it('should return an object', function () {
-        will(g(searchPath, 'js')).have(['path', 'extension', 'files']);
-    });
-
-    it('should use cwd if no path is provided', function () {
-        will(g(null, 'js').path).be(process.cwd());
-    });
-
-    it('should use \'js\' if no extension is provided', function () {
-        will(g(searchPath).extension).be('js');
-    });
-
-    it('should find only files with extension', function () {
-        var result = g(searchPath);
-        will(result.files.length).beGreaterThan(0);
-    });
-
-    it('should work recursively', function () {
-        var result = g(searchPath, 'js', true);
-        will(result.files.length).be(3);
-    });
-
-    it('should not look in "node_modules"', function () {
-        var dir = path.join(__dirname, '..');
-        var result = g(dir, null, true);
-
-        will(result.files).not.haveAnItemLike('node_modules');
-    });
-
-    it('should not look in "test"', function () {
-        var dir = path.join(__dirname, '..');
-        var result = g(dir, null, true);
-
-        will(result.files).not.haveAnItemLike('test');
-    });
-});
-
 describe('finding pattern in files', function () {
     var file = path.join(__dirname, 'dummy-source/foo.txt');
 
