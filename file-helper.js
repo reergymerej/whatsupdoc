@@ -4,26 +4,6 @@ var fs = require('fs'),
     path = require('path');
 
 /**
-* @name getMatches
-* @description Get matches for regex found in a file.
-* @param {String} filePath
-* @param {RegExp} regex
-* @return {String[]}
-* @public
-*/
-var getMatches = function (filePath, regex) {
-    var matches = [];
-
-    var file = fs.readFileSync(filePath, 'utf-8');
-
-    if (file) {
-        matches = file.match(regex) || [];
-    }
-
-    return matches;
-};
-
-/**
 * @name readFileSync
 * @description Reads a file's contents and creates it if it
 * doesn't exist yet.
@@ -50,5 +30,4 @@ var readFileSync = function (filePath) {
     return text;
 };
 
-exports.getMatches = getMatches;
 exports.readFileSync = readFileSync;

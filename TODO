@@ -1,9 +1,12 @@
 
+config.js
 setup config
     - find config file or use default
 
+file-finder.js
 find files
 
+pattern-finder.js
 find documentation in files
 
 create DocBlocks

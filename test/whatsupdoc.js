@@ -14,23 +14,7 @@ var searchPath = path.join(__dirname, 'dummy-source');
 var testFile = path.join(searchPath, 'foo.js');
 var testFileText = fs.readFileSync(testFile, 'utf-8');
 
-willy.addTest(function beLessThan(expectedValue) {
-    return this.if(
 
-        // a function passed the value being tested
-        function (actualValue) {
-
-            // return the result of your test
-            return actualValue < expectedValue;
-        },
-
-        // a string explaining what you were testing
-        'be less than',
-
-        // the value tested (optional)
-        expectedValue
-    );
-});
 
 describe('generating docs', function () {
     var dir = path.join(__dirname, 'dummy-source');
