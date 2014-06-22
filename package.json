@@ -1,6 +1,6 @@
 {
   "name": "whatsupdoc",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Generate pretty API docs in your project's README.",
   "main": "whatsupdoc",
   "directories": {
