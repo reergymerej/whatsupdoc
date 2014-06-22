@@ -13,115 +13,53 @@ var fs = require('fs'),
 */
 var DocBlock = function (raw, filePath) {
     var items = getItems(raw);
-    this.filePath = filePath;
+
     this.groupItems(items);
-};
 
-/**
-* @name groupItems
-* @param {Object} items
-*/
-DocBlock.prototype.groupItems = function (items) {
-    var me = this;
-    
-    util.each(items, function (item) {
-        me[item.key] = me[item.key] || [];
-        me[item.key].push(item);
-    });
-};
-
-DocBlock.prototype.stringify = function () {
-    var templateFilePath = path.join(__dirname, 'block-template.txt');
-    var template = swig.compileFile(templateFilePath);
-    var that = this;
-
-    var obj = {
-        file: this.filePath,
-        name: this.getName(),
-        privacy: this.getPrivacy(),
-        description: this.description &&
-            this.description[0].description,
-
-        params: this.param,
-        returns: this.return && this.return[0]
-    };
-
-    return template(obj);
-};
-
-DocBlock.prototype.getName = function () {
-    var result = '*unnamed*';
-    var possible = ['method', 'class', 'function', 'name'];
-    var that = this;
-    var which;
-    
-    util.each(possible, function (possibility) {
-        if (that.hasOwnProperty(possibility)) {
-            which = possibility;
-        }
-    });
-
-    if (which) {
-        result = that[which][0].name;
-    }
-
-    return result;
-};
-
-DocBlock.prototype.getPrivacy = function () {
-    var result = 'not specified';
-    var possible = ['public', 'protected', 'private'];
-    var that = this;
-    var which;
-    
-    util.each(possible, function (possibility) {
-        if (that.hasOwnProperty(possibility)) {
-            which = possibility;
-        }
-    });
-
-    if (which) {
-        result = that[which][0].key;
-    }
-
-    return result;
+    this.name = this.getName();
+    this.privacy = this.getPrivacy();
+    this.file = filePath;
+    this.params = this.getParams();
 };
 
 /**
 * @function getItems
+* @description Takes the raw doc string and splits it into
+* its component items.
 * @param {String}
 * @return {Object[]}
 */
 var getItems = function (raw) {
 
-    /**
-    * @function getRawItems
-    * @description Identify each item in the doc block.
-    * @param {String} raw
-    * @return {String[]} strings
-    * @private
-    */
-    var getRawItems = function (raw) {
-
-        var items;
-
-        raw = raw.replace(/(\*\/)/g, '');
-        raw = raw.replace(/\n/g, ' ');
-        raw = raw.replace(/ *\* /g, ' ');
-
-        items = raw.split('@');
-        items.splice(0, 1);
-
-        return items.sort();
-    };
-
     var rawItems = getRawItems(raw);
-
     var items = [];
 
     util.each(rawItems, function (item) {
         items.push(parseItem(item));
     });
+
+    return items;
+};
+
+/**
+* @function getRawItems
+* @description Strip out all the whitespace and asterisks
+* and devide thw whole doc string into the individual
+* item strings.
+* @param {String} raw
+* @return {String[]} strings
+* @private
+*/
+var getRawItems = function (raw) {
+
+    var items;
+
+    raw = raw.replace(/(\*\/)/g, '');
+    raw = raw.replace(/\n/g, ' ');
+    raw = raw.replace(/ *\* /g, ' ');
+
+    items = raw.split('@');
+    items.splice(0, 1);
 
     return items;
 };
@@ -228,6 +166,103 @@ var parseItem = function (item) {
 
     return obj;
 };
+
+/**
+* @name groupItems
+* @param {Object} items
+*/
+DocBlock.prototype.groupItems = function (items) {
+    var me = this;
+    
+    util.each(items, function (item) {
+        me[item.key] = me[item.key] || [];
+        me[item.key].push(item);
+    });
+};
+
+DocBlock.prototype.stringify = function () {
+    var templateFilePath = path.join(__dirname, 'block-template.txt');
+    var template = swig.compileFile(templateFilePath);
+    var that = this;
+
+    var obj = {
+        file: this.file,
+        name: this.getName(),
+        privacy: this.getPrivacy(),
+        description: this.description &&
+            this.description[0].description,
+
+        params: this.param,
+        returns: this.return && this.return[0]
+    };
+
+    return template(obj);
+};
+
+/**
+* @name getName
+* @description Get the name, whether defined by name, method, class, or function.
+* @return {String} defaults to '*unnamed*'
+*/
+DocBlock.prototype.getName = function () {
+    var result = '*unnamed*';
+    var possible = ['method', 'class', 'function', 'name'];
+    var that = this;
+    var which;
+    
+    util.each(possible, function (possibility) {
+        if (that.hasOwnProperty(possibility)) {
+            which = possibility;
+        }
+    });
+
+    if (which) {
+        result = that[which][0].name;
+    }
+
+    return result;
+};
+
+/**
+* @name getPrivacy
+* @description Get the privacy flag for the block.
+* @return {String} defaults to 'not specified'
+*/
+DocBlock.prototype.getPrivacy = function () {
+    var result = 'not specified';
+    var possible = ['public', 'protected', 'private'];
+    var that = this;
+    var which;
+    
+    util.each(possible, function (possibility) {
+        if (that.hasOwnProperty(possibility)) {
+            which = possibility;
+        }
+    });
+
+    if (which) {
+        result = that[which][0].key;
+    }
+
+    return result;
+};
+
+/**
+* @name getParams
+* @description Get the params for this block, in order.
+* @return {Object[]}
+*/
+DocBlock.prototype.getParams = function () {
+    var params = [];
+
+    if (this.param) {
+        this.param.forEach(function (param) {
+            params.push(param);
+        });
+    }
+    return params;
+};
+
 
 // ================================================
 exports.DocBlock = DocBlock;
