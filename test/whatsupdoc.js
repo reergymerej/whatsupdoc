@@ -59,4 +59,9 @@ describe('generating docs', function () {
 
         will(fs2).be(fs1);
     });
+
+    it('should only include public blocks', function () {
+        var blocks = whatsupdoc.go(searchPath);
+        will(blocks).haveOnly('public');
+    });
 });

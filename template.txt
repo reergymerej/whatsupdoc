@@ -1,33 +1,5 @@
 <!--- whatsupdoc-start -->
 
-{% if public %}
-## Public
-
 {{ public }}
-
----
-{% endif %}
-
-{% if protected %}
-## Protected
-
-{{ protected }}
-
----
-{% endif %}
-
-{% if private %}
-## Private
-
-{{ private }}
-
----
-{% endif %}
-
-{% if '' %}
-## ?
-
-{{ '' }}
-{% endif %}
 
 <!--- whatsupdoc-end -->

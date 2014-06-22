@@ -226,10 +226,10 @@ DocBlock.prototype.getName = function () {
 /**
 * @name getPrivacy
 * @description Get the privacy flag for the block.
-* @return {String} defaults to 'not specified'
+* @return {String} defaults to 'public'
 */
 DocBlock.prototype.getPrivacy = function () {
-    var result = 'not specified';
+    var result = 'public';
     var possible = ['public', 'protected', 'private'];
     var that = this;
     var which;

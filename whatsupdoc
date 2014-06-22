@@ -39,10 +39,14 @@ var init = function (dir) {
 * @method go
 * @param {String} [dir = process.cwd()]
 * @public
+* @return {DocBlock[]} blocks The blocks used to generate
+* the documentation.
 */
 var go = function (dir) {
     
-    var files, blocks, result;
+    var files,
+        blocks,
+        stringifiedBlocks;
 
     directory = dir;
 
@@ -52,13 +56,15 @@ var go = function (dir) {
     files = fileFinder.getFiles(directory, 'js');
 
     // find the blocks in each
-    blocks = getBlocksFromFiles(files);
+    blocks = getDocBlocksFromFiles(files);
 
-    blocks = groupBlocks(blocks);
+    blocks = getPublicBlocks(blocks);
 
-    result = stringify(blocks);
+    stringifiedBlocks = stringify(blocks);
 
-    writeResults(result);
+    writeResults(stringifiedBlocks);
+
+    return blocks;
 };
 
 /**
@@ -97,31 +103,20 @@ var insertDocs = function (target, docs) {
 };
 
 /**
-* @name groupBlocks
+* @name getPublicBlocks
 * @description group blocks by privacy
 * @param {DocBlock[]} blocks
 * @return {Object}
 */
-var groupBlocks = function (blocks) {
+var getPublicBlocks = function (blocks) {
     var grouped = {
-        'public': [],
-        'protected': [],
-        'private': [],
-        '': []
+        'public': []
     };
 
     util.each(blocks, function (block) {
-        var which = '';
-
-        if (block.public) {
-            which = 'public';
-        } else if (block.protected) {
-            which = 'protected';
-        } else if (block.private) {
-            which = 'private';
+        if (block.privacy === 'public') {
+            grouped.public.push(block);
         }
-
-        grouped[which].push(block);
     });
 
     return grouped;
@@ -129,12 +124,12 @@ var groupBlocks = function (blocks) {
 
 /**
 * @description get the DocBlocks from an Array of files
-* @function getBlocksFromFiles
+* @function getDocBlocksFromFiles
 * @param {String[]} filePaths
 * @return {DocBlock[]}
 * @private
 */
-var getBlocksFromFiles = function (filePaths) {
+var getDocBlocksFromFiles = function (filePaths) {
     var i, max, result = [];
 
     var getBlocks = function (rawBlocks, filePath) {
@@ -167,6 +162,9 @@ var getBlocksFromFiles = function (filePaths) {
 */
 var stringify = function (groupedBlocks) {
     var result = '';
+    var templateFilePath = path.join(__dirname, 'template.txt');
+    var template = swig.compileFile(templateFilePath);
+    var stringified = {};
 
     util.each(groupedBlocks, function (blocks, privacy) {
         var str = '';
@@ -175,22 +173,11 @@ var stringify = function (groupedBlocks) {
             str += block.stringify();
         });
 
-        groupedBlocks[privacy] = str;
+        stringified[privacy] = str;
     });
-
-    // Now that we've got each group stringified, load up
-    // the main template.
-
-    var templateFilePath = path.join(__dirname, 'template.txt');
-    var template = swig.compileFile(templateFilePath);
-
-    groupedBlocks.foo = 'hello';
-
+    
     return template({
-        'private': groupedBlocks.private,
-        'protected': groupedBlocks.protected,
-        'public': groupedBlocks.public,
-        '': groupedBlocks['']
+        'public': stringified.public
     });
 };
 

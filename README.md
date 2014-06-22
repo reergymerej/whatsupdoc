@@ -46,8 +46,6 @@ Watch the adoption rate of your beautiful code skyrocket because you made it eas
 **[@name](#name)**  
 **[@param](#param)**  
 **[@private](#private)**  
-**[@protected](#protected)**  
-**[@public](#public)**  
 **[@return](#return)**  
 
 ---
@@ -103,16 +101,14 @@ The value returned from the function.  *See above for options.*
 
 ---
 
-### Privacy Flags
-
-Use these to indicate the intended privacy.  These tags aren't expected to be followed by anything (except an "I told you so" when someone cries after you change a private element they were depending on).
-
 <a name="private"></a>
-**@private**
+### Privacy Flag
 
-<a name="protected"></a>
-**@protected**
+If you want to document blocks for your own convenience, but not have them show up in the generated API docs, use `@private`.
 
-<a name="public"></a>
-**@public**
-
+```js
+/**
+* @description This block won't show up in the generated docs.
+* @private
+*/
+```
