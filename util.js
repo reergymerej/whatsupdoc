@@ -25,4 +25,15 @@ var each = function (collection, fn) {
     }
 };
 
+/**
+* @name log
+* @description logs text to the console
+* @param {String/String[]} msg the message to log
+*/
+var log = function (msg) {
+    arguments[0] = '  whatsupdoc: ' + arguments[0];
+    console.log.apply(this, arguments);
+};
+
 exports.each = each;
+exports.log = log;

@@ -187,7 +187,7 @@ DocBlock.prototype.stringify = function () {
 
     var obj = {
         file: this.file,
-        name: this.getName(),
+        name: this.name,
         privacy: this.getPrivacy(),
         description: this.description &&
             this.description[0].description,

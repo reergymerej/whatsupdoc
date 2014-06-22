@@ -112,3 +112,121 @@ If you want to document blocks for your own convenience, but not have them show 
 * @private
 */
 ```
+
+## Config
+
+You can customize options by including a `.whatsupdocrc` in the directory being scanned.  The example below represents the defaults.
+
+```json
+{
+    "exclude": ["node_modules", "test"],
+    "outputFile": "README.md"
+}
+```
+
+### Note
+
+If you don't want the docs added to the *end* of your README, you can specify where they'll be inserted by adding
+
+```html
+<!--- whatsupdoc-start --><!--- whatsupdoc-end -->
+```
+
+## Examples
+
+```js
+/**
+* @name someFoo
+* @description Do the foo stuff.
+* @param {String} foo the foo
+* @param {Boolean} [bar=false] some bar
+* @return {Object} asdf something is returned
+*/
+
+/**
+* @name getStringLength
+* @description Returns the number of characters
+* in a string.
+* @param {String} str the string to be examined - Oh, yeah.  I
+* forgot to mention that any description can span multiple
+* lines.
+* @return {Number}
+*/
+
+/**
+* @description This one doesn't have much info.
+* @param foo
+* @param [bar]
+*/
+
+/**
+* @description This is an internal function that
+* we don't want included in the API docs.
+* @param {String[]} foo an Array of Strings
+* @param {Boolean} [bar=false] another cryptic option
+* @private
+*/
+```
+
+
+### Example Output
+
+#### someFoo  
+Do the foo stuff.
+
+
+**Parameters**
+
+
+*  **foo** *String*
+      
+    the foo  
+    
+
+*  **bar** *Boolean*
+    optional  
+    some bar  
+    defaults to: false
+
+
+
+
+**Returns**: *Object*  
+something is returned
+
+
+#### getStringLength  
+Returns the number of characters in a string.
+
+
+**Parameters**
+
+
+*  **str** *String*
+      
+    the string to be examined - Oh, yeah.  I forgot to mention that any description can span multiple lines.  
+    
+
+
+
+
+**Returns**: *Number*  
+
+
+
+#### *unnamed*  
+This one doesn&#39;t have much info.
+
+
+**Parameters**
+
+
+*  **foo** *[object Object]*
+      
+      
+    
+
+*  **bar** *[object Object]*
+
+====
+

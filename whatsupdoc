@@ -53,16 +53,20 @@ var go = function (dir) {
     init(dir);
     
     // find the files
-    files = fileFinder.getFiles(directory, 'js');
+    util.log('searching', directory);
+    util.log('excluding', settings.exclude);
+    files = fileFinder.getFiles(directory, 'js', settings.exclude);
 
     // find the blocks in each
     blocks = getDocBlocksFromFiles(files);
 
     blocks = getPublicBlocks(blocks);
+    util.log('found %d blocks in %d files', blocks.public.length, files.length);
 
     stringifiedBlocks = stringify(blocks);
 
     writeResults(stringifiedBlocks);
+    util.log('finished writing documentation\n');
 
     return blocks;
 };
@@ -175,7 +179,7 @@ var stringify = function (groupedBlocks) {
 
         stringified[privacy] = str;
     });
-    
+
     return template({
         'public': stringified.public
     });
