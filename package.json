@@ -1,7 +1,10 @@
 {
   "name": "whatsupdoc",
   "version": "0.1.0",
-  "description": "Generate pretty API docs in your project's README.",
+  "description": "Generate API docs and insert them into your project's README with practically no effort.",
+  "keywords": [
+    "documentation", "generator", "javadoc", "rdoc", "doc generator"
+  ],
   "main": "whatsupdoc",
   "directories": {
     "test": "test"
