@@ -2,7 +2,12 @@
 
 Generate API docs and insert them into your project's README with practically no effort.  Document your code with comment blocks and **whatsupdoc** does the rest.
 
-[How to Use](#howto) | [Tags](#tags) | [Customization](#customization) | [Examples](#examples) | [Thanks](#thanks)
+[Installation](#installation) | [How to Use](#howto) | [Tags](#tags) | [Customization](#customization) | [Examples](#examples) | [Thanks](#thanks)
+
+<a name="installation"></a>
+## Installation
+
+Install **whatsupdoc** from npm with `npm install -g whatsupdoc`.  Done.
 
 <a name="howto"></a>
 ## How to Use
@@ -34,7 +39,9 @@ The clarity and maintainability of your code has undoubtably already improved, b
 
     ./whatsupdoc .
 
-This will find documentation blocks in JavaScript files in the current directory and add them to the end of README.md.
+This will find documentation blocks in JavaScript files in the current directory and add them to the end of README.md.  If you did not install **whatsupdoc** globally, run
+
+    ./node_modules/whatsupdoc/whatsupdoc .
 
 <a name="tags"></a>
 **Step 3**
