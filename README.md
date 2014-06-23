@@ -192,4 +192,4 @@ Similarly, if you don't like the default output, you can create your own `block-
 <a name="thanks"></a>
 ## Thanks
 
-Thank you for taking the time to check out **whatsupdoc**.  If you have any comments or suggestions, please reach out.
+Thank you for taking the time to check out **whatsupdoc**.  If you have any comments or suggestions, please [reach out](https://github.com/reergymerej/whatsupdoc/issues).
