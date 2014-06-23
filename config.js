@@ -9,7 +9,9 @@ var defaultConfig = {
     extensions: ['js'],
     include: [],
     exclude: ['node_modules', 'test'],
-    outputFile: 'README.md'
+    outputFile: 'README.md',
+    template: 'template.txt',
+    blockTemplate: 'block-template.txt'
 };
 
 var FILENAME = '.whatsupdocrc';

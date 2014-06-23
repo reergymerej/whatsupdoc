@@ -1,7 +1,10 @@
 # Whats Up Doc
 
-Generate pretty API docs in your project's README.
+Generate API docs and insert them into your project's README with practically no effort.  Document your code with comment blocks and **whatsupdoc** does the rest.
 
+[How to Use](#howto) | [Tags](#tags) | [Customization](#customization) | [Examples](#examples) | [Thanks](#thanks)
+
+<a name="howto"></a>
 ## How to Use
 
 **Step 1**
@@ -31,13 +34,16 @@ The clarity and maintainability of your code has undoubtably already improved, b
 
     ./whatsupdoc .
 
-This will find documentation blocks in JavaScript files and add them to the end of README.md.
+This will find documentation blocks in JavaScript files in the current directory and add them to the end of README.md.
 
+<a name="tags"></a>
 **Step 3**
 
 Watch the adoption rate of your beautiful code skyrocket because you made it easy for people to use.
 
 ## Tags
+
+The supported tags are listed here for quick reference.  If you'd prefer, you can skip to the [examples](#examples) and learn by trying.
 
 **[@class](#class)**  
 **[@description](#description)**  
@@ -50,9 +56,9 @@ Watch the adoption rate of your beautiful code skyrocket because you made it eas
 
 ---
 
-### Simple Text
+### Simple Text Tags
 
-These tags should be followed with arbitrary text.  Well, not arbitrary, but you know what I mean.  If needed, the text can span multiple lines.
+These tags should be followed by some text.  If needed, the text can span multiple lines.
 
 <a name="description"></a>
 **@description**
@@ -69,7 +75,7 @@ The name of the method, function, or class being documented.  You can also use *
 
 ---
 
-### Optional Complexity
+### Complex Tags
 
 These tags should be followed by one or more of the following optional elements *in this order*:
 
@@ -113,18 +119,8 @@ If you want to document blocks for your own convenience, but not have them show 
 */
 ```
 
-## Config
-
-You can customize options by including a `.whatsupdocrc` in the directory being scanned.  The example below represents the defaults.
-
-```json
-{
-    "exclude": ["node_modules", "test"],
-    "outputFile": "README.md"
-}
-```
-
-### Note
+<a name="customization"></a>
+## Customization
 
 If you don't want the docs added to the *end* of your README, you can specify where they'll be inserted by adding
 
@@ -132,6 +128,31 @@ If you don't want the docs added to the *end* of your README, you can specify wh
 <!--- whatsupdoc-start --><!--- whatsupdoc-end -->
 ```
 
+You can customize options by including a `.whatsupdocrc` in the directory being scanned.  The example below represents the defaults.
+
+```json
+{
+    "exclude": ["node_modules", "test"],
+    "outputFile": "README.md",
+    "blockTemplate": "block-template.txt"
+}
+```
+
+Similarly, if you don't like the default output, you can create your own `block-template.txt` in the scanned directory.  It will be compiled by [Swig](http://paularmstrong.github.io/swig/) and used to generate you documentation.  The glossary below describes the values that may appear for each documentation block.
+
+* **description** - the description of the block
+* **name** - the name of the block
+* **params** - an Array of param Objects for the block; Each param may have the properties:
+    * **default** - default value
+    * **description** - description of parameter
+    * **name** - name of parameter
+    * **optional** - true/false if the parameter is optional
+    * **type** - type(s) expected for parameter
+* **returns** - Object describing what the block returns.  The returns Object may have the properties:
+    * **description** - description of returned value
+    * **type** - type(s) to be returned
+
+<a name="examples"></a>
 ## Examples
 
 ```js
@@ -168,65 +189,7 @@ If you don't want the docs added to the *end* of your README, you can specify wh
 */
 ```
 
+<a name="thanks"></a>
+## Thanks
 
-### Example Output
-
-#### someFoo  
-Do the foo stuff.
-
-
-**Parameters**
-
-
-*  **foo** *String*
-      
-    the foo  
-    
-
-*  **bar** *Boolean*
-    optional  
-    some bar  
-    defaults to: false
-
-
-
-
-**Returns**: *Object*  
-something is returned
-
-
-#### getStringLength  
-Returns the number of characters in a string.
-
-
-**Parameters**
-
-
-*  **str** *String*
-      
-    the string to be examined - Oh, yeah.  I forgot to mention that any description can span multiple lines.  
-    
-
-
-
-
-**Returns**: *Number*  
-
-
-
-#### *unnamed*  
-This one doesn&#39;t have much info.
-
-
-**Parameters**
-
-
-*  **foo** *[object Object]*
-      
-      
-    
-
-*  **bar** *[object Object]*
-
-====
-
+Thank you for taking the time to check out **whatsupdoc**.  If you have any comments or suggestions, please reach out.

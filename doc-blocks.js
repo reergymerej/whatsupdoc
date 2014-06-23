@@ -180,11 +180,14 @@ DocBlock.prototype.groupItems = function (items) {
     });
 };
 
-DocBlock.prototype.stringify = function () {
-    var templateFilePath = path.join(__dirname, 'block-template.txt');
+/**
+* @name stringify
+* @description Get the string version of this block.
+* @param {String} templateFilePath path to the template to use
+* @return {String}
+*/
+DocBlock.prototype.stringify = function (templateFilePath) {
     var template = swig.compileFile(templateFilePath);
-    var that = this;
-
     var obj = {
         file: this.file,
         name: this.name,

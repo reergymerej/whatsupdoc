@@ -48,9 +48,7 @@ var go = function (dir) {
         blocks,
         stringifiedBlocks;
 
-    directory = dir;
-
-    init(dir);
+    init(path.join(process.cwd(), dir));
     
     // find the files
     util.log('searching', directory);
@@ -166,15 +164,16 @@ var getDocBlocksFromFiles = function (filePaths) {
 */
 var stringify = function (groupedBlocks) {
     var result = '';
-    var templateFilePath = path.join(__dirname, 'template.txt');
+    var templateFilePath = path.join(__dirname, settings.template);
     var template = swig.compileFile(templateFilePath);
     var stringified = {};
+    var blockTemplate = getBlockTemplate();
 
     util.each(groupedBlocks, function (blocks, privacy) {
         var str = '';
 
         util.each(blocks, function (block) {
-            str += block.stringify();
+            str += block.stringify(blockTemplate);
         });
 
         stringified[privacy] = str;
@@ -183,6 +182,23 @@ var stringify = function (groupedBlocks) {
     return template({
         'public': stringified.public
     });
+};
+
+/**
+* @name getBlockTemplate
+* @description Get the file to use for generating block templates.
+* Check working directory and, if not found, use the default.
+* @return {String} template the file path of the template to use
+* @private
+*/
+var getBlockTemplate = function () {
+    var tmplName = settings.blockTemplate;
+    var blockTemplate = path.join(directory, tmplName);
+    if (!fs.existsSync(blockTemplate)) {
+        blockTemplate = path.join(__dirname, tmplName);
+    }
+
+    return blockTemplate;
 };
 
 /**
