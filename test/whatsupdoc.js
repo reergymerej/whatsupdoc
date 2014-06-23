@@ -16,7 +16,7 @@ var testFileText = fs.readFileSync(testFile, 'utf-8');
 
 
 
-describe.only('generating docs', function () {
+describe('generating docs', function () {
     var dir = path.join(__dirname, 'dummy-source');
     var outputFilePath = path.join(dir, 'README.md');
     

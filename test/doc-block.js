@@ -41,10 +41,6 @@ describe('getting a DocBlock from raw string', function () {
         will(block.file).be(filePath);
     });
 
-    it('should be able to stringify itself', function () {
-        will(block.stringify()).exist();
-    });
-
     describe('params', function () {
         it('should contain an item for each param', function () {
             will(block.params.length).be(4);

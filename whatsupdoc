@@ -48,7 +48,7 @@ var go = function (dir) {
         blocks,
         stringifiedBlocks;
 
-    init(path.join(process.cwd(), dir));
+    init(dir);
     
     // find the files
     util.log('searching', directory);
@@ -193,7 +193,7 @@ var stringify = function (groupedBlocks) {
 */
 var getBlockTemplate = function () {
     var tmplName = settings.blockTemplate;
-    var blockTemplate = path.join(directory, tmplName);
+    var blockTemplate = path.join(path.join(process.cwd(), directory), tmplName);
     if (!fs.existsSync(blockTemplate)) {
         blockTemplate = path.join(__dirname, tmplName);
     }
